@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+{% block content %}
+
+
+    <h1>Menu</h1>
+    <div>
+        <div>
+
+            {% for fooditem in fooditems %}
+            <div>
+                <a href="{% url 'updatefooditem' fooditem.id %}">Edit</a>
+                <a href="">Delete</a>
+                <h5><a href="{% url 'fooditem' fooditem.id %}">{{fooditem.Food_Name}}</a></h5>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

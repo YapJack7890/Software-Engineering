@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+{% block content %}
+
+
+    <h1>Home</h1>
+
+    <div>
+        <div>
+            {% for student in students %}
+            <div>
+                <h5>{{student.Student_Name}}</h5>
+
+            </div>
+            {% endfor %}
+            <a href="{% url 'student' %}">add student</a>
+            <a href="{% url 'menu' %}">menu</a>
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -33,22 +33,25 @@ def registerPage(request):
 #
 def loginPage(request):
     page = 'login'
+    #get user
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        user = authenticate(request, email=email, password=password)
+        
+        #check if it exist
         #try:
         #    user = User.objects.get(email=email)
         #except: 
         #    messages.error(request, "Email does not exist")
-
+        #make sure info is right
+        user = authenticate(request, email=email, password=password)
+        #login
         if user is not None:
             login(request, user)
             return redirect('home')
         else:
             messages.error(request, ("Email does not exit or password is wrong"))
 
-             
     context = {'page': page}
     return render(request, 'register_login.html', context)
 

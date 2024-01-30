@@ -1,16 +1,16 @@
 {% block content %}
     <div class="food-item-details">
-        <h1>{{ foodItem.id }} - {{ foodItem.Food_Name }}</h1>
+        <h1>{{ fooditem.id }} - {{ fooditem.Food_Name }}</h1>
         <div>
-            <h2>RM{{ foodItem.Food_Price }}</h2>
-            <p>Ingredients: {{ foodItem.Ingredient_List }}</p>
-            <p>Description: {{ foodItem.Food_Description }}</p>
+            <h2>RM{{ fooditem.Food_Price }}</h2>
+            <p>Ingredients: {{ fooditem.Ingredient_List }}</p>
+            <p>Description: {{ fooditem.Food_Description }}</p>
         </div>
     </div>
 
     <!-- Add some styling or layout improvements as needed -->
 
-    <form method="POST" action="{% url 'add_to_cart' pk=foodItem.id %}">
+    <form method="POST" action="{% url 'add_to_cart' pk=fooditem.id student_id=current_student.id %}">
         {% csrf_token %}
         <div class="quantity-controls">
             <button type="button" onclick="decreaseQuantity()">-</button>

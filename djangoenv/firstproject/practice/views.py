@@ -122,6 +122,7 @@ def menu(request, student_id):
     if student_id is not None:
         # Get the current student based on the provided student_id
         current_student = get_object_or_404(Student, id=student_id)
+        print(f"Current Student: {current_student}")  # Print the current student information
     else:
         # Handle the case when student_id is not provided
         current_student = None
@@ -136,47 +137,56 @@ def foodItem(request, pk, student_id):
     current_student = get_object_or_404(Student, id=student_id)
 
     # Fetch the FoodItem object based on the provided pk
-    foodItem = FoodItem.objects.get(id=pk)
+    fooditem = FoodItem.objects.get(id=pk)
 
-    context = {'fooditem': foodItem, 'current_student': current_student}
+    context = {'fooditem': fooditem, 'current_student': current_student}
     return render(request, 'fooditem.html', context)
 
 
-def add_to_cart(request, pk):
+def add_to_cart(request, pk, student_id):
     # Get the product based on the product_id
-    foodItem = get_object_or_404(FoodItem, id=pk)
+    fooditem = get_object_or_404(FoodItem, id=pk)
+    print(f"Student ID: {student_id}")  
 
-    # Check if the user has a student, create one if not
-    if not hasattr(request.user, 'student'):
+    # Get the Student instance based on the student_id
+    current_student = get_object_or_404(Student, id=student_id)
+    print(f"Student: {current_student}")
+    # Check if the user has a student
+    if current_student is None:
         #redirect to student page 
         messages.warning(request, 'A student profile is needed to add food item to cart')
-        return redirect('student') 
-    # Now, the user should have a student. Get the student.
-    student = request.user.student
+        return redirect('home') 
 
-    if not hasattr(request.user, 'cart'):
-        Cart.objects.create(student=student)
+    # Check if the student has a cart
+    if not hasattr(current_student, 'cart'):
+        Cart.objects.create(student=current_student)
 
     # Now, the student should have a cart. Get the cart.
-    cart = student.cart
+    cart = current_student.cart
 
     # Get the quantity from the form data
     quantity = int(request.POST.get('quantity', 1))
 
     # Check if the 'add_to_cart' button was pressed
-    if 'add_to_cart' in request.POST:
+    #if 'add_to_cart' in request.POST:
+    print("Adding to cart")
     # Check if the product is already in the cart, update quantity if yes, create a new item if not
-        cart_item, item_created = CartItem.objects.get_or_create(cart=cart, food_item=foodItem)
+    cart_item, item_created = CartItem.objects.get_or_create(cart=cart, cart_item=fooditem)
 
-        if not item_created:
-            # Update quantity based on the selected value
-            cart_item.quantity += quantity
-            # Ensure the quantity is not less than 1
-            cart_item.quantity = max(1, cart_item.cartitem_quantity)
-            cart_item.save()
-        return redirect('menu')
+    if not item_created:
+        # Update quantity based on the selected value
+        cart_item.cartitem_quantity += quantity
+        # Ensure the quantity is not less than 1
+        cart_item.cartitem_quantity = max(1, cart_item.cartitem_quantity)
+        cart_item.save()
+        # Redirect to 'menu' with the student_id parameter
+    return redirect('menu', student_id = student_id)
 
-    return render(request, 'fooditem.html', {'fooditem': foodItem})
+def car_summary(request, pk):
+    #request_details = Request.objects.get(id=pk)
+    #context = {'request_details': request_details}
+    #return render(request, 'request_details.html', context)
+    pass
 
 def place_order(request):
     # Let's assume a user is already authenticated, you might want to handle authentication in a real-world scenario
@@ -328,3 +338,4 @@ def worker_register(request):
              messages.error(request, 'An error has occurred')
 
     return render(request, 'worker_register.html', {'form':form})
+

@@ -1,0 +1,26 @@
+<!-- templates/worker_login.html -->
+{% extends 'main.html' %}
+{% block content %}
+
+
+<form method="POST" action="">
+    {% csrf_token %}
+    {{form.as_p}}
+
+    <input type="submit" value="Submit" />
+</form>
+
+
+<body>
+    {% if messages %}
+    <ul class="messages">
+    {% for message in messages %}
+    <li></li>{{ message }}</li>
+    {% endfor %}
+    {% endif %}
+    </ul>
+
+</body>
+
+
+{% endblock content %}

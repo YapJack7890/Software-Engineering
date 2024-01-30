@@ -1,0 +1,34 @@
+<!-- templates/order_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order List</title>
+</head>
+<body>
+    <h1>Order List</h1>
+
+    {% if order %}
+        <ul>
+            {% for orders in order %}
+                <li>
+                    <td></td><strong>Order ID:</strong> {{ orders.id }}<br>
+                    <strong>User:</strong> {{ orders.student }}<br>
+                    <strong>Order Status:</strong> {{ orders.Order_Status }}<br>
+                    <strong>Food Items:</strong>
+                    <ul>
+                        {% for food_item in orders.food_items.all %}
+                            <li>{{ food_item.Food_Name }} - {{ orders.quantity }}</li>
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No orders available.</p>
+    {% endif %}
+    <a href="{% url 'adminmenu' %}">Menu</a>
+    <a href="{% url 'request_list' %}">Requests</a>
+</body>
+</html>

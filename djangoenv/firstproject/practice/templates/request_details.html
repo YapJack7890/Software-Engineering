@@ -1,0 +1,18 @@
+
+{% block content %}
+
+
+    <h1>{{ request_details.id }} - {{ request_details.RequestFood_Name }}</h1>
+    <div>
+        <div>
+            <h1>RM{{ request_details.RequestFood_Price }}</h1>
+            <p>Ingredients: {{ request_details.RequestIngredient_List }}</p>
+            <p>Description: {{ request_details.RequestFood_Description }}</p>
+            <a href="{% url 'request_list' %}">Back</a>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

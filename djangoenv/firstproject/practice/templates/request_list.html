@@ -1,0 +1,35 @@
+<!-- templates/request_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Request List</title>
+</head>
+<body>
+    <h1>Request List</h1>
+
+    {% if requests %}
+        <ul>
+            {% for request in requests %}
+                <li>
+                    <a href="{% url 'request_details' request.id %}">{{ request.Request_Title }}</a><br>
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            <input type="hidden" name="request_id" value="{{ request.id }}">
+                            <!-- Button for 'accept' action -->
+                            <button type="submit" name="action" value="accept">Accept</button>
+    
+                            <!-- Button for 'deny' action -->
+                            <button type="submit" name="action" value="deny">Deny</button>
+                        </form>
+                    <hr>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No requests available.</p>
+    {% endif %}
+    <a href="{% url 'adminmenu' %}">Menu</a>
+    <a href="{% url 'vieworder' %}">Order List</a>
+</body>
+</html>

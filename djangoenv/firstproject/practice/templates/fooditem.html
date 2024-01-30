@@ -1,18 +1,38 @@
-
 {% block content %}
-
-
-    <h1>{{ foodItem.id }} - {{ foodItem.Food_Name }}</h1>
-    <div>
+    <div class="food-item-details">
+        <h1>{{ foodItem.id }} - {{ foodItem.Food_Name }}</h1>
         <div>
-            <h1>RM{{ foodItem.Food_Price }}</h1>
+            <h2>RM{{ foodItem.Food_Price }}</h2>
             <p>Ingredients: {{ foodItem.Ingredient_List }}</p>
             <p>Description: {{ foodItem.Food_Description }}</p>
-            <button type="button" value="{{ product.id }}" id="add_cart">Add To Cart</button>
         </div>
     </div>
 
+    <!-- Add some styling or layout improvements as needed -->
 
+    <form method="POST" action="{% url 'add_to_cart' pk=foodItem.id %}">
+        {% csrf_token %}
+        <div class="quantity-controls">
+            <button type="button" onclick="decreaseQuantity()">-</button>
+            <input type="text" id="quantity" name="quantity" value="1" readonly>
+            <button type="button" onclick="increaseQuantity()">+</button>
+        </div>
+        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+    </form>
 
+    <script>
+        function decreaseQuantity() {
+            var quantityInput = document.getElementById('quantity');
+            var quantityValue = parseInt(quantityInput.value);
+            if (quantityValue > 1) {
+                quantityInput.value = quantityValue - 1;
+            }
+        }
 
+        function increaseQuantity() {
+            var quantityInput = document.getElementById('quantity');
+            var quantityValue = parseInt(quantityInput.value);
+            quantityInput.value = quantityValue + 1;
+        }
+    </script>
 {% endblock %}

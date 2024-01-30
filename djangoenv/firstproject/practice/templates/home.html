@@ -6,14 +6,17 @@
 
     <div>
         <div>
+            <h1>{{ user.id }} - {{ user.username }}</h1>
             {% for student in students %}
-            <div>
-                <h5>{{student.Student_Name}}</h5>
-
-            </div>
-            {% endfor %}
+            <tr>
+                <td><a href="{% url 'menu' student.id %}">{{student.Student_Name}}</a></td>
+                <td>{{ student.Student_Gender }}</td>
+                <td>{{ student.Student_Race }}</td>
+                <td>{{ student.Student_Grade }}</td>
+            </tr>
+        {% endfor %}
             <a href="{% url 'student' %}">add student</a>
-            <a href="{% url 'menu' %}">menu</a>
+            <a href="{% url 'menu_without_student' %}">menu</a>
         </div>
     </div>
 

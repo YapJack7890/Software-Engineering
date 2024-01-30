@@ -1,13 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-# Create your models here.
-#class Parent(models.Model):
-#    Parent = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
-#    Parent_Phone_Num = models.IntegerField('Parent Phone Number')
-#    Parent_Username = models.CharField('Parent Username', max_length=50)
-#    Parent_Password = models.CharField('Parent Password', max_length=50)
-#    Parent_Email = models.EmailField('Parent Email', max_length=50)
 class Student(models.Model):
     Parent = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
@@ -27,11 +22,10 @@ class FoodItem(models.Model):
     #Food_Image = models.ImageField('Food Image', upload_to='food_pictures/')
     Ingredient_List = models.TextField('Ingredient List', max_length=100)
     Food_Description = models.TextField('Food Description', max_length=200)
-    Food_Category = models.CharField('Food Category', max_length=10)
+    #Food_Category = models.CharField('Food Category', max_length=10)
 
     def _str_(self):
         return self.Food_Name
-
 
 class Request(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
@@ -40,19 +34,32 @@ class Request(models.Model):
     #RequestFood_Image = models.ImageField('Request Food Image', upload_to='food_pictures/')
     RequestIngredient_List = models.TextField('Request Ingredient List', max_length=100)
     RequestFood_Description = models.TextField('Request Food Description', max_length=200)
-    RequestFood_Category = models.CharField('Request Food Category', max_length=10)
+    #RequestFood_Category = models.CharField('Request Food Category', max_length=10)
     Request_Title = models.CharField('Request Title', max_length=50)
 
     def _str_(self):
         return self.RequestFood_Name
 
+class Cart(models.Model):
+    student = models.OneToOneField(Student, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    food_item = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
+    cartitem_quantity = models.PositiveIntegerField(default=1)
+    def total_price(self):
+        return self.quantity * self.food_item.Food_Price
 
 class Order(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
-    food = models.ForeignKey(FoodItem, on_delete=models.SET_NULL, null=True)
+    food_items = models.ManyToManyField(FoodItem, related_name='orders')
+    quantity = models.PositiveIntegerField(default=1)
     Order_Status = models.CharField('Order Status', max_length=10)
-
+    #qr_code = models.ImageField(upload_to='qr_codes', blank=True)
+    #order_date = models.DateTimeField(auto_now_add=True)
     #def _str_(self):
     #    return self.id
 
@@ -63,4 +70,5 @@ class CanteenWorker(models.Model):
 
     def _str_(self):
         return self.Worker_Username
+
 

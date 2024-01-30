@@ -9,10 +9,13 @@
             {% for fooditem in fooditems %}
             <div>
                 <a href="{% url 'updatefooditem' fooditem.id %}">Edit</a>
-                <a href="">Delete</a>
+                <a href="{% url 'deletefooditem' fooditem.id %}">Delete</a>
                 <h5><a href="{% url 'fooditem' fooditem.id %}">{{fooditem.Food_Name}}</a></h5>
             </div>
             {% endfor %}
+            <a href="{% url 'addfooditem' %}">Add Food Item</a>
+            <a href="{% url 'vieworder' %}">Order List</a>
+            <a href="{% url 'request_list' %}">Requests</a>
         </div>
     </div>
 

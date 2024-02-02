@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -45,23 +45,30 @@ class Cart(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+@receiver(post_save, sender=Student)
+def create_cart_for_student(sender, instance, created, **kwargs):
+    if created:
+        Cart.objects.create(student=instance)
+
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    food_item = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
+    cart_item = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
     cartitem_quantity = models.PositiveIntegerField(default=1)
     def total_price(self):
-        return self.quantity * self.food_item.Food_Price
+        return self.cartitem_quantity * self.cart_item.Food_Price
+
 
 class Order(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
-    food_items = models.ManyToManyField(FoodItem, related_name='orders')
-    quantity = models.PositiveIntegerField(default=1)
     Order_Status = models.CharField('Order Status', max_length=10)
-    #qr_code = models.ImageField(upload_to='qr_codes', blank=True)
-    #order_date = models.DateTimeField(auto_now_add=True)
-    #def _str_(self):
-    #    return self.id
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order_item = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
+    orderitem_quantity = models.PositiveIntegerField(default=1)
+    def total_price(self):
+        return self.orderitem_quantity * self.order_item.Food_Price
 
 class CanteenWorker(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
@@ -70,5 +77,6 @@ class CanteenWorker(models.Model):
 
     def _str_(self):
         return self.Worker_Username
+
 
 

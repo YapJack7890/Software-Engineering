@@ -4,7 +4,7 @@ from django.contrib import messages
 from . forms import CreateUserForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
-from .models import Student, FoodItem, Request, Order, CanteenWorker, Cart, CartItem
+from .models import Student, FoodItem, Request, Order, OrderItem, CanteenWorker, Cart, CartItem
 from .forms import StudentForm, RequestForm, FoodItemForm
 from django.views import View
 from django.contrib.auth.decorators import user_passes_test
@@ -257,13 +257,13 @@ def remove_cart_item(request, cart_item_id):
 
 @login_required(login_url='register')
 def checkout(request, cart_id):
-        # Retrieve the Cart instance using the provided student_id
+        # Retrieve the Cart instance using the cart_id
         cart = get_object_or_404(Cart, id=cart_id)
 
         # Retrieve all CartItem instances associated with the Cart
         cart_items = CartItem.objects.filter(cart=cart)
         
-        # Prepare data for rendering (this can be improved with templates)
+        # Prepare data for rendering
         cart_data = []
         total_price = 0  # Initialize total price
         cart_item = None  # Initialize cart_item
@@ -282,56 +282,36 @@ def checkout(request, cart_id):
         # Return a simple HTML response (this can be improved with templates)
         return render(request, 'checkout.html', {'cart_data': cart_data, 'cart': cart, 'cart_item': cart_item, 'total_price': total_price})
 
-def create_order(request, pk, student_id):
-    # Get the product based on the product_id
-    cart = get_object_or_404(Cart, id=pk)
-    print(f"Student ID: {student_id}")  
-
-    # Get the Student instance based on the student_id
-    current_student = get_object_or_404(Student, id=student_id)
-    print(f"Student: {current_student}")
-
-
-    # Check if the student has a cart
-    if not hasattr(current_student, 'cart'):
-        Cart.objects.create(student=current_student)
-
-    # Now, the student should have a cart. Get the cart.
-    cart = current_student.cart
-
-    # Get the quantity from the form data
-    quantity = int(request.POST.get('quantity', 1))
-
-
-    # Update quantity based on the selected value
-    cart_item.cartitem_quantity = max(1, quantity)
-    cart_item.save()
-
 @login_required(login_url='register')
-def place_order(request):
-    # Let's assume a user is already authenticated, you might want to handle authentication in a real-world scenario
-    user = User.objects.get(django_user=request.user)
+def place_order(request, cart_id):
+    # Get the product based on the product_id
+    cart = get_object_or_404(Cart, id=cart_id)
+    cart_items = CartItem.objects.filter(cart=cart)
 
-    # Assume we have some food items available in the database
-    food_items = FoodItem.objects.all()
+    order = Order.objects.create(cart=cart, order_total_price=0)
 
-    if request.method == 'POST':
-        selected_food_items = request.POST.getlist('food_items')
-        quantity = int(request.POST.get('quantity', 1))
-        order_status = request.POST.get('order_status', 'Pending')
+    total_price = 0
 
-        # Create a new order
-        order = Order.objects.create(
-            user=user,
-            quantity=quantity,
-            order_status=order_status,
+    for cart_item in cart_items:
+        order_item = OrderItem.objects.create(
+            order=order,
+            order_item=cart_item.cart_item,
+            orderitem_quantity=cart_item.cartitem_quantity,
+            order_item_total_price=cart_item.total_price(),
         )
-        # Add selected food items to the order
-        order.food_items.set(selected_food_items)
 
-        return render(request, 'order_placed.html', {'order': order})
+        total_price += order_item.order_item_total_price
 
-    return render(request, 'place_order.html', {'food_items': food_items})
+    # Update the total_price in the Order model
+    order.order_total_price = total_price
+    order.save()
+
+    # delete cart items after saved as order
+    cart_items.delete()
+
+    #get the student id from cart
+    student_id = cart.student.id
+    return redirect('menu', student_id = student_id)
 
 #Below functions are for CanteenWorker page
 @user_passes_test(is_canteen_worker, login_url='login')
@@ -352,10 +332,34 @@ def RequestPage(request):
     return render(request, 'request.html', {'form':form})
 
 @login_required(login_url='register')
-def view_order(request):
+def view_orders(request):
 
-    order = Order.objects.all()  # Fetch all Order objects
-    return render(request, 'vieworder.html', {'order': order})
+    orders = Order.objects.all()  # Fetch all Order objects
+
+    orders_data = []
+
+    for order in orders:
+        order_items = OrderItem.objects.filter(order=order)
+
+        order_data = {
+            'order_id': order.id,
+            'total_price': order.order_total_price,
+            'order_items': [],
+        }
+
+        for order_item in order_items:
+            item_data = {
+                'food_item_name': order_item.order_item.Food_Name,
+                'quantity': order_item.orderitem_quantity,
+                'total_price': order_item.order_item_total_price,
+            }
+            order_data['order_items'].append(item_data)
+
+        orders_data.append(order_data)
+
+    # Pass data to the template
+    context = {'orders_data': orders_data}
+    return render(request, 'vieworders.html', context)
     
 #Below functions are for admin page
 @user_passes_test(is_superuser, login_url='login')

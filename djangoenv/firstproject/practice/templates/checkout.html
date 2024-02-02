@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+</head>
+<body>
+
+    <h1>Checkout</h1>
+
+        <table border="1">
+            <thead>
+                <tr>   
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>id</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item_data in cart_data %}
+    <tr>
+        <td>{{ item_data.name }}</td>
+        <td>{{ item_data.quantity }}</td>
+        <td>{{ item_data.total_price }}</td>
+        <td>{{ item_data.id }}</td>
+    </tr>
+{% endfor %}
+
+            </tbody>
+        </table>
+
+        <p>Total Price: {{ total_price }}</p>
+        <a href="{% url 'place_order' cart_id=cart.id %}">Place order</a>
+</body>
+</html>

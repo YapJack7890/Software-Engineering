@@ -95,21 +95,27 @@ def logoutUser(request):
 @login_required(login_url='register')
 def home(request):
     current_user = request.user
-    #user_id = current_user.id
-    #context = {'user_id': user_id}
-    students = Student.objects.filter(Parent=current_user)  # Fetch all student objects
-    return render(request, 'home.html', {'students': students})
+    students = Student.objects.filter(Parent=current_user)
+    
+    # Create a list to store each student's cart
+    carts = []
+    for student in students:
+        # Access the related cart for each student
+        cart = student.cart
+        carts.append(cart)
+    return render(request, 'home.html', {'students': students, 'carts': carts})
 
 @login_required(login_url='register')
 def studentPage(request):
+    
     studentform = StudentForm()
     
     if request.method == 'POST':
         studentform = StudentForm(request.POST)
         if studentform.is_valid():
-            #user = form.save(commit=False)
-            studentform.save()
-            #login(request, studentform)
+            student_form = studentform.save(commit=False)
+            student_form.Parent = request.user
+            student_form.save()
             return redirect('home')
         else:
              messages.error(request, 'An error has occurred')
@@ -142,7 +148,7 @@ def foodItem(request, pk, student_id):
     context = {'fooditem': fooditem, 'current_student': current_student}
     return render(request, 'fooditem.html', context)
 
-
+@login_required(login_url='register')
 def add_to_cart(request, pk, student_id):
     # Get the product based on the product_id
     fooditem = get_object_or_404(FoodItem, id=pk)
@@ -173,6 +179,10 @@ def add_to_cart(request, pk, student_id):
     # Check if the product is already in the cart, update quantity if yes, create a new item if not
     cart_item, item_created = CartItem.objects.get_or_create(cart=cart, cart_item=fooditem)
 
+    # Update quantity based on the selected value
+    cart_item.cartitem_quantity = max(1, quantity)
+    cart_item.save()
+
     if not item_created:
         # Update quantity based on the selected value
         cart_item.cartitem_quantity += quantity
@@ -182,12 +192,122 @@ def add_to_cart(request, pk, student_id):
         # Redirect to 'menu' with the student_id parameter
     return redirect('menu', student_id = student_id)
 
-def car_summary(request, pk):
-    #request_details = Request.objects.get(id=pk)
-    #context = {'request_details': request_details}
-    #return render(request, 'request_details.html', context)
-    pass
+@login_required(login_url='register')
+def display_cart(request, student_id):
+    try:
+        # Retrieve the Cart instance using the provided student_id
+        cart = get_object_or_404(Cart, student_id=student_id)
 
+        # Retrieve all CartItem instances associated with the Cart
+        cart_items = CartItem.objects.filter(cart=cart)
+        
+        # Prepare data for rendering (this can be improved with templates)
+        cart_data = []
+        total_price = 0  # Initialize total price
+        cart_item = None  # Initialize cart_item
+        for cart_item in cart_items:
+            item_data = {
+                'id': cart_item.cart_item.id,
+                'name': cart_item.cart_item.Food_Name,
+                'quantity': cart_item.cartitem_quantity,
+                'total_price': cart_item.total_price(),
+            }
+            cart_data.append(item_data)
+
+            # Accumulate the total price
+            total_price += cart_item.total_price()
+
+        # Return a simple HTML response (this can be improved with templates)
+        return render(request, 'display_cart.html', {'student_id': student_id, 'cart_data': cart_data, 'cart': cart, 'cart_item': cart_item, 'total_price': total_price})
+
+    except Cart.DoesNotExist:
+        # Handle the case where the Cart with the provided student_id does not exist
+        return render(request, 'cart_not_found.html')
+    
+@login_required(login_url='register')
+def increase_cart_item_quantity(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, pk=cart_item_id)
+
+    # Increase the quantity by 1
+    cart_item.cartitem_quantity += 1
+    cart_item.save()
+
+    return redirect('display_cart', student_id=cart_item.cart.student.id)
+
+@login_required(login_url='register')
+def decrease_cart_item_quantity(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, pk=cart_item_id)
+
+    if cart_item.cartitem_quantity > 1:
+        # Decrease the quantity by 1, but ensure it stays at least 1
+        cart_item.cartitem_quantity = max(1, cart_item.cartitem_quantity - 1)
+        cart_item.save()
+    else: 
+        # If the quantity is 1, remove the item from the cart
+        cart_item.delete()
+
+    return redirect('display_cart', student_id=cart_item.cart.student.id)
+
+@login_required(login_url='register')
+def remove_cart_item(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, id=cart_item_id)
+    cart_item.delete()
+
+    return redirect('display_cart', student_id=cart_item.cart.student.id)
+
+@login_required(login_url='register')
+def checkout(request, cart_id):
+        # Retrieve the Cart instance using the provided student_id
+        cart = get_object_or_404(Cart, id=cart_id)
+
+        # Retrieve all CartItem instances associated with the Cart
+        cart_items = CartItem.objects.filter(cart=cart)
+        
+        # Prepare data for rendering (this can be improved with templates)
+        cart_data = []
+        total_price = 0  # Initialize total price
+        cart_item = None  # Initialize cart_item
+        for cart_item in cart_items:
+            item_data = {
+                'id': cart_item.cart_item.id,
+                'name': cart_item.cart_item.Food_Name,
+                'quantity': cart_item.cartitem_quantity,
+                'total_price': cart_item.total_price(),
+            }
+            cart_data.append(item_data)
+
+            # Accumulate the total price
+            total_price += cart_item.total_price()
+
+        # Return a simple HTML response (this can be improved with templates)
+        return render(request, 'checkout.html', {'cart_data': cart_data, 'cart': cart, 'cart_item': cart_item, 'total_price': total_price})
+
+def create_order(request, pk, student_id):
+    # Get the product based on the product_id
+    cart = get_object_or_404(Cart, id=pk)
+    print(f"Student ID: {student_id}")  
+
+    # Get the Student instance based on the student_id
+    current_student = get_object_or_404(Student, id=student_id)
+    print(f"Student: {current_student}")
+
+
+    # Check if the student has a cart
+    if not hasattr(current_student, 'cart'):
+        Cart.objects.create(student=current_student)
+
+    # Now, the student should have a cart. Get the cart.
+    cart = current_student.cart
+
+    # Get the quantity from the form data
+    quantity = int(request.POST.get('quantity', 1))
+
+
+    # Update quantity based on the selected value
+    cart_item.cartitem_quantity = max(1, quantity)
+    cart_item.save()
+
+@login_required(login_url='register')
 def place_order(request):
     # Let's assume a user is already authenticated, you might want to handle authentication in a real-world scenario
     user = User.objects.get(django_user=request.user)
@@ -279,13 +399,18 @@ def deleteFoodItem(request, pk):
     context = {'obj': fooditem}
     return render(request, 'delete.html', context)
 
-
-
 @user_passes_test(is_superuser, login_url='login')
 def adminmenu(request):
 
     fooditems = FoodItem.objects.all()  # Fetch all FoodItem objects
     return render(request, 'adminmenu.html', {'fooditems': fooditems})
+
+def adminfoodItem(request, pk):
+    # Fetch the FoodItem object based on the provided pk
+    fooditem = FoodItem.objects.get(id=pk)
+
+    context = {'fooditem': fooditem, }
+    return render(request, 'adminfooditem.html', context)
 
 
 @user_passes_test(is_superuser, login_url='login')
@@ -307,8 +432,7 @@ def request_list(request):
                     FoodItem.objects.create(Food_Name=request_obj.RequestFood_Name, 
                                             Food_Price=request_obj.RequestFood_Price,
                                             Ingredient_List=request_obj.RequestIngredient_List, 
-                                            Food_Description=request_obj.RequestFood_Category,
-                                            Food_Category=request_obj.RequestFood_Category)
+                                            Food_Description=request_obj.RequestFood_Description)
                     request_obj.delete()  # Delete the request after processing
 
                 elif action == 'deny':
@@ -338,4 +462,3 @@ def worker_register(request):
              messages.error(request, 'An error has occurred')
 
     return render(request, 'worker_register.html', {'form':form})
-

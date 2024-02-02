@@ -33,31 +33,6 @@ def registerPage(request):
 
     return render(request, 'register_login.html', {'form':form})
 
-'''
-def loginPage(request):
-    page = 'login'
-    #get user
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST['password']
-        
-        #check if it exist
-        #try:
-        #    user = User.objects.get(email=email)
-        #except: 
-        #    messages.error(request, "Email does not exist")
-        #make sure info is right
-        user = authenticate(request, username=username, password=password)
-        #login
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else:
-           messages.error(request, ("Email does not exit or password is wrong"))
-
-    context = {'page': page}
-    return render(request, 'register_login.html', context)
-'''
 def loginPage(request):
     page = 'login'
 
@@ -67,20 +42,25 @@ def loginPage(request):
 
         user = authenticate(request, username=username, password=password)
 
+        canteen_worker = CanteenWorker.objects.filter(Worker_Username=username, Worker_Password=password)
+
+        if canteen_worker.exists():
+            # Valid CanteenWorker
+            return redirect('vieworders')  # Adjust to your canteen page URL
+
         if user is not None:
             # Check user type based on model
-            if hasattr(user, 'CanteenWorker'):
-                # User is a CanteenWorker
+            if isinstance(user, CanteenWorker):
+                # User is a valid CanteenWorker
                 login(request, user)
-                return redirect('vieworder')  # Adjust to your canteen page URL
             elif user.is_superuser:
                 # User is a superuser
                 login(request, user)
-                return redirect('adminmenu')  # Adjust to your admin page URL
+                return redirect('adminmenu')  
             else:
                 # User is a regular user
                 login(request, user)
-                return redirect('home')  # Adjust to your user page URL
+                return redirect('home') 
         else:
             messages.error(request, "Invalid username or password")
 

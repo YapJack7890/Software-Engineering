@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>User Profile</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/user-profile.css">
+    </head>
+    <body>
+        <header>
+            <h1>CANTEEN FOOD RESERVATION</h1>
+            <a href="cart.html"><img src="image/cart.png" alt="logo"></a>
+        </header>
+        <nav>
+            <a href="user-profile.html" class="home"><img src="image/Home Page Selected.png">HOME</a>
+            <a href="user-menu.html" class ="menu"><img src="image/Menu.png">MENU</a>
+            <a href="login.html" class="logout" id="logout"><img src="image/Logout.png">LOGOUT</a>
+        </nav>
+        <main>
+            <div class="top-div">
+                <a id="profile-link" style="color:#A97C4E">Profile</a>
+                <a id="history-link">Order History</a>
+            </div>
+            <div id="profile-section">
+                <div id="display-form">
+                </div>
+                <div id="form-div" style="display:none">
+                    <form action="" id="form">
+                        <input type="text" placeholder="Student ID" id="student-id" name="student-id" required><br>
+                        <input type="text" placeholder="Student Name" id="student-name" name="student-name" required><br>
+                        <label for="gender"> Student Gender : </label><br>
+                        <input type="radio" id="male" name="gender" value="Male" required>
+                        <label for="male">Male</label><br>
+                        <input type="radio" id="female" name="gender" value="Female" required>
+                        <label for="female">Female</label><br>
+                        <label for="grade">Grade : </label>
+                        <input type="number" id="grade" name="grade" min="1" max="12" required><br>
+                        <input type="text" id="race" name="race" placeholder="Student Race" required><br>
+                        <input type="reset" value="Cancel" id="cancel">
+                        <input type="submit" value="ADD" id="adder">
+                        
+                    </form>
+                </div>
+                <div id="data-container"></div>
+                <button id="add">add student</button>
+            </div>
+            <div id="history-section" style="display: none;">
+                <div id="history-head">
+                    <p>Order ID</p>
+                    <p>Food Items</p>
+                    <p>Statues</p>
+                    <p>QR Code</p>
+                </div>
+            </div>
+        </main>
+        
+        <script src="js/user-profile.js" async defer></script>
+    </body>
+</html>

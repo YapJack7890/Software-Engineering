@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Admin Menu</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/admin-menu.css">
+
+    </head>
+    <body>
+        <header>
+            <h1>CANTEEN FOOD RESERVATION</h1>
+            <a href="#"><img src="image/bell.png" alt="logo" id="notif"></a>
+        </header>
+        <nav>
+            <a href="admin-menu.html" class ="menu"><img src="image/Menu Selected.png">MENU</a>
+            <a href="admin-orderlist.html" class="orderlist"><img src="image/Order.png">ORDERLIST</a>
+            <a href="admin-request.html" class="request"><img src="image/Change.png">REQUEST</a>
+            <a href="login.html" class="logout" id="logout"><img src="image/Logout.png">LOGOUT</a>
+        </nav>
+        <main id="main">
+            <button id="add-menu">+ Menu</button>
+            <div id="notification" style="display:none">
+            </div>
+            <div id="add-div" style="display:none">
+                <form action="" id="menu-form" name="menu-form">
+                    <label for="image-file" id="image-label" >Upload Image</label>
+                    <input type="file" multiple accept="image/*" id="image-file" name="image-file" required>
+                    <input type="text" placeholder="Food Name" id="food-name" name="food-name" required><br>
+                    <input type="text" placeholder="Ingredient list" id="ingredient-list" name="ingredient-list" required><br>
+                    <textarea name="request-description" id="request-description" cols="30" rows="10" placeholder="Request Description" required></textarea><br>
+                    <input type="text" placeholder="Price" id="price" name="price" required><br>
+                    <input type="submit" value="Submit" id="submit"><br>
+                    <input type="reset" value="Discard" id="discard">
+                </form>
+            </div>
+            <div id="menu">
+                <img src="image/GyatDamn.jpg" id="imageclick">
+                <div id="blueP">
+                    <p>GyatDamn</p>
+                </div>
+                <div id="bluebox">
+                    <label class="switch">
+                    <input type ="checkbox">
+                    <span class="slider round"></span><br>
+                </label>
+                <p>RM 5.00</p>
+                </div>
+            </div>
+            <div id="item-info" style="display:none">
+                <form action="" id="edit-menu"> 
+                    <div id="info-container">
+                        <img src="image/GyatDamn.jpg" id="form-imageclick"><br>             
+                        <input type="text" id="form-food-name" value="GyatDamn" name="edit" readonly><br>
+                        <input type="text" id="form-ingredient-list" value="Rice, Chicken, Egg" name="edit" readonly><br>
+                        <textarea id="form-request-description" cols="30" rows="10" name="edit" readonly>Spicy</textarea><br>
+                    </div>  
+                    <div id="other-info">
+                        <div id="quatity-container">
+                            <button type="button" onclick="decrease()">-</button>
+                            <input type="text" id="number" value="1" readonly>
+                            <button type="button" onclick="increase()">+</button><br>
+                        </div>
+                        <input type="text" id="form-price" value="RM 5.00" name="edit" readonly><br>
+                    </div>
+
+                </form>
+                <div id="button-div">
+                    <button id="edit-button" onclick="makeEditable()">EDIT</button>
+                    <button id="delete-button">DELETE</button>
+                    <button id="save-button" style="display: none;" onclick="saveChanges()">SAVE</button>
+                    <button id="discard-button" style="display: none;" onclick="buttonChange()">DISCARD</button>
+                </div>
+            </div>
+        </main>
+        
+        <script src="js/admin-menu.js" async defer></script>
+    </body>
+</html>

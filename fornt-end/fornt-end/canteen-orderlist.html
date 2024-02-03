@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Canteen Order List</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/canteen-orderlist.css">
+    </head>
+    <body>
+        <header>
+            <h1>CANTEEN FOOD RESERVATION</h1>
+            <a href="#"><img src="image/bell.png" alt="logo" id="notif"></a>
+        </header>
+        <nav>
+            <a href="canteen-orderlist.html" class="orderlist"><img src="image/Order Select.png">ORDERLIST</a>
+            <a href="canteen-request.html" class="request"><img src="image/Change.png">REQUEST</a>
+            <a href="canteen-qrcode.html" class="qrcode"><img src="image/Qr Code.png"><br>QR-CODE SCAN</a>
+            <a href="login.html" class="logout" id="logout"><img src="image/Logout.png">LOGOUT</a>
+        </nav>
+        <main>
+            <div id="order-top">
+                <p>Order ID</p>
+                <p>Food Items</p>
+                <p>Status</p>
+            </div>
+            <div id="notification" style="display:none">
+
+            </div>
+        </main>
+        
+        <script src="js/canteen-orderlist.js" async defer></script>
+    </body>
+</html>

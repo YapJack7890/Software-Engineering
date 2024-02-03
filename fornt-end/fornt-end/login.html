@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Login</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/login.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+      <header>
+        <h1>CANTEEN FOOD RESERVATION</h1>
+      </header>   
+          <h2>Login</h2>
+          <form action="home" class="textbox">
+            <input type="text" id="lusername" name="lusername" placeholder="USERNAME....."
+            title="Incorrect Username" required>
+            
+            <input type="password" id="lpassword" name="lpassword" placeholder="PASSWORD....."
+            title="Incorrect Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+            <br>
+            <input type="submit" value="Login" onclick="login()">
+          </form>
+          <div class= "textlink">
+            <a href="forget-password.html" class = "forget-password">Forget Password</a>
+            <a href="register.html" class = "sign-up">Sign Up</a>
+          </div>
+      </div>
+
+        <script src="js/login.js" async defer></script>
+    </body>
+</html>

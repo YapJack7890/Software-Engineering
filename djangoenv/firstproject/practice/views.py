@@ -8,11 +8,12 @@ from .models import Student, FoodItem, Request, Order, OrderItem, CanteenWorker,
 from .forms import StudentForm, RequestForm, FoodItemForm
 from django.views import View
 from django.contrib.auth.decorators import user_passes_test
+from django.http import JsonResponse
 
 #Jakie: Jak12345@
 # Create your views here.
 def is_canteen_worker(user):
-    return user.is_authenticated and hasattr(user, 'CanteenWorker')
+    return user.is_authenticated and user.is_staff
 
 def is_superuser(user):
     return user.is_authenticated and user.is_superuser
@@ -42,21 +43,16 @@ def loginPage(request):
 
         user = authenticate(request, username=username, password=password)
 
-        canteen_worker = CanteenWorker.objects.filter(Worker_Username=username, Worker_Password=password)
-
-        if canteen_worker.exists():
-            # Valid CanteenWorker
-            return redirect('vieworders')  # Adjust to your canteen page URL
-
         if user is not None:
             # Check user type based on model
-            if isinstance(user, CanteenWorker):
-                # User is a valid CanteenWorker
-                login(request, user)
-            elif user.is_superuser:
+            if user.is_superuser:
                 # User is a superuser
                 login(request, user)
                 return redirect('adminmenu')  
+            elif user.is_staff:
+                # User is a valid CanteenWorker
+                login(request, user)
+                return redirect("vieworders")
             else:
                 # User is a regular user
                 login(request, user)
@@ -291,8 +287,9 @@ def place_order(request, cart_id):
 
     #get the student id from cart
     student_id = cart.student.id
-    return redirect('menu', student_id = student_id)
-
+    #return redirect('menu', student_id = student_id)
+    return JsonResponse({'success': True, 'message': 'Order placed successfully', 'student_id': student_id})
+    
 #Below functions are for CanteenWorker page
 @user_passes_test(is_canteen_worker, login_url='login')
 def RequestPage(request):
@@ -311,8 +308,7 @@ def RequestPage(request):
 
     return render(request, 'request.html', {'form':form})
 
-@login_required(login_url='register')
-def view_orders(request):
+def worker_view_orders(request):
 
     orders = Order.objects.all()  # Fetch all Order objects
 
@@ -396,7 +392,36 @@ def adminfoodItem(request, pk):
     context = {'fooditem': fooditem, }
     return render(request, 'adminfooditem.html', context)
 
+@user_passes_test(is_superuser, login_url='login')
+def view_orders(request):
 
+    orders = Order.objects.all()  # Fetch all Order objects
+
+    orders_data = []
+
+    for order in orders:
+        order_items = OrderItem.objects.filter(order=order)
+
+        order_data = {
+            'order_id': order.id,
+            'total_price': order.order_total_price,
+            'order_items': [],
+        }
+
+        for order_item in order_items:
+            item_data = {
+                'food_item_name': order_item.order_item.Food_Name,
+                'quantity': order_item.orderitem_quantity,
+                'total_price': order_item.order_item_total_price,
+            }
+            order_data['order_items'].append(item_data)
+
+        orders_data.append(order_data)
+
+    # Pass data to the template
+    context = {'orders_data': orders_data}
+    return render(request, 'vieworders.html', context)
+    
 @user_passes_test(is_superuser, login_url='login')
 def request_list(request):
     print(f"Method: {request.method}")
@@ -435,17 +460,18 @@ def request_details(request, pk):
 
 @user_passes_test(is_superuser, login_url='login')
 def worker_register(request):
-    form = CreateUserForm()
-    
+    workerform = CreateUserForm()
     if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.save()
+        workerform = CreateUserForm(request.POST)
+        if workerform.is_valid():
+            worker_form = workerform.save(commit=False)
+            worker_form.is_staff = True
+            worker_form.save()
+            return redirect('adminmenu')
         else:
-             messages.error(request, 'An error has occurred')
+            messages.error(request, 'An error has occurred')
 
-    return render(request, 'worker_register.html', {'form':form})
+    return render(request, 'worker_register.html', {'form':workerform})
 
 def forget_password(request):
     return render(request, 'forget-password.html')

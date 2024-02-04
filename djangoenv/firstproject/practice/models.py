@@ -12,9 +12,6 @@ class Student(models.Model):
     Student_Grade = models.IntegerField('Student Grade')
     #Student_Created = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.Student_Name
-
 class FoodItem(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     Food_Name = models.CharField('Food Name', max_length=50)
@@ -23,9 +20,6 @@ class FoodItem(models.Model):
     Ingredient_List = models.TextField('Ingredient List', max_length=100)
     Food_Description = models.TextField('Food Description', max_length=200)
     #Food_Category = models.CharField('Food Category', max_length=10)
-
-    def _str_(self):
-        return self.Food_Name
 
 class Request(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
@@ -36,9 +30,6 @@ class Request(models.Model):
     RequestFood_Description = models.TextField('Request Food Description', max_length=200)
     #RequestFood_Category = models.CharField('Request Food Category', max_length=10)
     Request_Title = models.CharField('Request Title', max_length=50)
-
-    def _str_(self):
-        return self.RequestFood_Name
 
 class Cart(models.Model):
     student = models.OneToOneField(Student, on_delete=models.CASCADE)
@@ -57,26 +48,15 @@ class CartItem(models.Model):
     def total_price(self):
         return self.cartitem_quantity * self.cart_item.Food_Price
 
-
 class Order(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
+    cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, null=True)
     Order_Status = models.CharField('Order Status', max_length=10)
+    order_total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     order_item = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
     orderitem_quantity = models.PositiveIntegerField(default=1)
-    def total_price(self):
-        return self.orderitem_quantity * self.order_item.Food_Price
-
-class CanteenWorker(models.Model):
-    id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    Worker_Username = models.CharField('Canteen Worker Username', max_length=50)
-    Worker_Password = models.CharField('Canteen Worker Password', max_length=50)
-
-    def _str_(self):
-        return self.Worker_Username
-
-
+    order_item_total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 

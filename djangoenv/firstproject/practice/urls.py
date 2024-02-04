@@ -7,6 +7,7 @@ urlpatterns = [
     path('register', views.registerPage, name='register'),
     path('logout', views.logoutUser, name='logout'),
     path('', views.loginPage, name='login'),
+    path('reset_password', views.forget_password, name="reset_password"),
 
     #Parent Page
     path('home', views.home, name='home'),

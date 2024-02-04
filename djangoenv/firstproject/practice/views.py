@@ -446,3 +446,6 @@ def worker_register(request):
              messages.error(request, 'An error has occurred')
 
     return render(request, 'worker_register.html', {'form':form})
+
+def forget_password(request):
+    return render(request, 'forget-password.html')

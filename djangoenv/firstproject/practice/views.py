@@ -18,6 +18,9 @@ def is_canteen_worker(user):
 def is_superuser(user):
     return user.is_authenticated and user.is_superuser
 
+def is_canteen_worker_or_superuser(user):
+    return user.is_authenticated and (user.is_superuser or user.is_staff)
+
 #below functions are authentications
 def registerPage(request):
     form = CreateUserForm()
@@ -308,53 +311,6 @@ def RequestPage(request):
 
     return render(request, 'request.html', {'form':form})
 
-def worker_view_orders(request):
-
-    orders = Order.objects.all()  # Fetch all Order objects
-
-    orders_data = []
-
-    for order in orders:
-        order_items = OrderItem.objects.filter(order=order)
-
-        order_data = {
-            'order_id': order.id,
-            'total_price': order.order_total_price,
-            'order_items': [],
-        }
-
-        for order_item in order_items:
-            item_data = {
-                'food_item_name': order_item.order_item.Food_Name,
-                'quantity': order_item.orderitem_quantity,
-                'total_price': order_item.order_item_total_price,
-            }
-            order_data['order_items'].append(item_data)
-
-        orders_data.append(order_data)
-
-    # Pass data to the template
-    context = {'orders_data': orders_data}
-    return render(request, 'vieworders.html', context)
-    
-#Below functions are for admin page
-@user_passes_test(is_superuser, login_url='login')
-def FoodItemPage(request):
-    form = FoodItemForm()
-    
-    if request.method == 'POST':
-        form = FoodItemForm(request.POST)
-        if form.is_valid():
-            #user = form.save(commit=False)
-            form.save()
-            #login(request, form)
-            return redirect('adminmenu')
-        else:
-             messages.error(request, 'An error has occurred')
-
-
-    return render(request, 'addfooditem.html', {'form':form})
-
 @user_passes_test(is_superuser, login_url='login')
 def updateFoodItem(request, pk):
     fooditem = FoodItem.objects.get(id=pk)
@@ -392,7 +348,7 @@ def adminfoodItem(request, pk):
     context = {'fooditem': fooditem, }
     return render(request, 'adminfooditem.html', context)
 
-@user_passes_test(is_superuser, login_url='login')
+@user_passes_test(is_canteen_worker_or_superuser, login_url='login')
 def view_orders(request):
 
     orders = Order.objects.all()  # Fetch all Order objects

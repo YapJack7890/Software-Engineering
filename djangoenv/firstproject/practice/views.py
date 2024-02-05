@@ -250,6 +250,24 @@ def remove_cart_item(request, cart_item_id):
     return redirect('display_cart', student_id=cart_item.cart.student.id)
 
 @login_required(login_url='register')
+def order_history(request):
+    current_user = request.user
+    students = Student.objects.filter(Parent=current_user)
+
+    order_items_by_order = {}
+
+    for student in students:
+        order_items = OrderItem.objects.filter(order__cart__student=student).select_related('order__cart__student', 'order_item')
+        
+        for order_item in order_items:
+            order = order_item.order
+            if order not in order_items_by_order:
+                order_items_by_order[order] = []
+            order_items_by_order[order].append(order_item)
+
+    return render(request, 'orderhistory.html', {'order_items_by_order': order_items_by_order})
+    
+@login_required(login_url='register')
 def checkout(request, cart_id):
         # Retrieve the Cart instance using the cart_id
         cart = get_object_or_404(Cart, id=cart_id)

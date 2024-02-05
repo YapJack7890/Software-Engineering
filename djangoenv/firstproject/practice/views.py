@@ -4,7 +4,7 @@ from django.contrib import messages
 from . forms import CreateUserForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
-from .models import Student, FoodItem, Request, Order, OrderItem, CanteenWorker, Cart, CartItem
+from .models import Student, FoodItem, Request, Order, OrderItem, Cart, CartItem
 from .forms import StudentForm, RequestForm, FoodItemForm
 from django.views import View
 from django.contrib.auth.decorators import user_passes_test

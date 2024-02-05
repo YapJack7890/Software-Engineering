@@ -23,6 +23,7 @@ urlpatterns = [
     #Parent Page
     path('home', views.home, name='home'),
     path('student', views.studentPage, name='student'),
+    path('editstudent/<str:pk>/', views.editStudent, name='editstudent'),
     path('menu/<int:student_id>/', views.menu, name='menu'),
     path('menu/', views.menu, name='menu_without_student'),
     path('foodItem/<int:pk>/<int:student_id>/', views.foodItem, name='fooditem'),
@@ -46,6 +47,6 @@ urlpatterns = [
     path('worker_register', views.worker_register, name='worker_register'),
 
     #Canteen Worker Page
-#     path('request', views.RequestPage, name='request'),
+     path('request', views.RequestPage, name='request'),
 #     path('workerorders', views.worker_view_orders, name='workerorders'),
 ]

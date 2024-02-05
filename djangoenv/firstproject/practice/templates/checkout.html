@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta id="meta" name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
     <title>Checkout</title>
+    
 </head>
 <body>
 
@@ -34,5 +34,80 @@
 
         <p>Total Price: {{ total_price }}</p>
         <a href="{% url 'place_order' cart_id=cart.id %}">Place order</a>
-</body>
+
+        <div id="paypal-button-container"></div>
+        
+        <script src="https://www.paypal.com/sdk/js?client-id=ATNI-7Vrb0LcOVA5Kiij2FUrDghuevkKaQ62L32GyQ7dLVvd8cb7VN9chKsQpQfqWZXV4hUpa8aAwW3B&currency=MYR"></script>
+
+    <script>
+        function placeOrder(){
+            var url = "{% url 'place_order' cart_id=cart.id %}"
+
+            // Redirect to the menu
+            window.location.href = "{% url 'menu' student_id=cart.student.id %}";
+        }
+            // Render the PayPal button into #paypal-button-container
+            paypal.Buttons({
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '{{ total_price }}'
+                        }
+                    }]
+                });
+            },
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) 
+                    {
+
+                // Show a success message to the buyer
+                alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                // Call the create_order function via AJAX
+                fetch('/place_order/{{ cart.id }}/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),  // Ensure you have a function to retrieve the CSRF token
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'same-origin',
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Check if the order was successfully created
+                        if (data.success) {
+                            // Redirect to the "menu" page
+                            window.location.href = '/menu/' + data.student_id;
+                        } else {
+                            console.error('Error placing order:', data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error placing order:', error);
+                    });
+                });
+            }
+        }).render('#paypal-button-container');
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+    </script>
+            
+    </body>
 </html>

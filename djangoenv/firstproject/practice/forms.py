@@ -25,7 +25,7 @@ class RequestForm(ModelForm):
         model = Request
         fields = ('RequestFood_Name', 'RequestFood_Price', 'RequestIngredient_List', 'RequestFood_Description', 'Request_Title')
 
-class CanteenWorkerForm(ModelForm):
-    class Meta:
-        model = CanteenWorker
-        fields = ('Worker_Username', 'Worker_Password')
+# class CanteenWorkerForm(ModelForm):
+#     class Meta:
+#         model = CanteenWorker
+#         fields = ('Worker_Username', 'Worker_Password')

@@ -8,16 +8,26 @@
         <div>
             <h1>{{ user.id }} - {{ user.username }}</h1>
             {% for student in students %}
-            <tr>
-                <td><a href="{% url 'menu' student.id %}">{{student.Student_Name}}</a></td>
-                <td>{{ student.Student_Gender }}</td>
-                <td>{{ student.Student_Race }}</td>
-                <td>{{ student.Student_Grade }}</td>
-                <a href="{% url 'editstudent' student.id %}">Edit</a>
-            </tr>
+            {% for cart in carts %}
+            {% if student.id == cart.student.id %}
+                                <tr>
+                                    <td><a href="{% url 'menu' student.id %}">{{ student.Student_Name }}</a></td>
+                                    <td>{{ student.Student_Gender }}</td>
+                                    <td>{{ student.Student_Race }}</td>
+                                    <td>{{ student.Student_Grade }}</td>
+                                    <a href="{% url 'editstudent' student.id %}">Edit</a>
+                                    <td>
+                                        <h3>Cart Information</h3>
+                                        <p>Cart created at: {{ cart.created_at }}</p>
+                                        <p>Cart last updated at: {{ cart.updated_at }}</p>
+                                        <hr>
+                                    </td>
+                                </tr>
+                            {% endif %}
+            {% endfor %}
         {% endfor %}
             <a href="{% url 'student' %}">add student</a>
-            <a href="{% url 'menu_without_student' %}">menu</a>
+            <a href="{% url 'orderhistory' %}">order history</a>
         </div>
     </div>
 

@@ -13,6 +13,7 @@
                 <td>{{ student.Student_Gender }}</td>
                 <td>{{ student.Student_Race }}</td>
                 <td>{{ student.Student_Grade }}</td>
+                <a href="{% url 'editstudent' student.id %}">Edit</a>
             </tr>
         {% endfor %}
             <a href="{% url 'student' %}">add student</a>

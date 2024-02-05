@@ -102,6 +102,7 @@ def studentPage(request):
 
     return render(request, 'student.html', {'form':studentform})
 
+@login_required(login_url='register')
 def editStudent(request, pk):
     student = Student.objects.get(id=pk)
     form = StudentForm(instance=student)

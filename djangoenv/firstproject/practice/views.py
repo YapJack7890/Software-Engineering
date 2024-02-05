@@ -261,8 +261,11 @@ def order_history(request):
         
         for order_item in order_items:
             order = order_item.order
+            #Check if Order is already a key in the dictionary
             if order not in order_items_by_order:
+                #If not, add a new key with an empty list
                 order_items_by_order[order] = []
+            #Append the current OrderItem to the list associated with the Order
             order_items_by_order[order].append(order_item)
 
     return render(request, 'orderhistory.html', {'order_items_by_order': order_items_by_order})

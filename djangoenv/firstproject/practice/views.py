@@ -102,6 +102,20 @@ def studentPage(request):
 
     return render(request, 'student.html', {'form':studentform})
 
+def editStudent(request, pk):
+    student = Student.objects.get(id=pk)
+    form = StudentForm(instance=student)
+    if request.method == 'POST':
+        form = StudentForm(request.POST, instance=student)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+        else:
+             messages.error(request, 'An error has occurred')
+        
+    context = {'form': form}
+    return render(request, 'student.html', context)
+
 @login_required(login_url='register')
 def menu(request, student_id):
     if student_id is not None:

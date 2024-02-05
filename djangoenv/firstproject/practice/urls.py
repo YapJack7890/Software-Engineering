@@ -31,14 +31,13 @@ urlpatterns = [
     path('deletefooditem/<str:pk>/', views.deleteFoodItem, name='deletefooditem'),
     path('updatefooditem/<str:pk>/', views.updateFoodItem, name='updatefooditem'),
     path('adminmenu', views.adminmenu, name='adminmenu'),
+    path('vieworders', views.view_orders, name='vieworders'),
     path('adminfoodItem/<int:pk>/', views.adminfoodItem, name='adminfooditem'),
     path('request_list', views.request_list, name='request_list'),
     path('request_details/<str:pk>/', views.request_details, name='request_details'),
-
+    path('worker_register', views.worker_register, name='worker_register'),
 
     #Canteen Worker Page
     path('request', views.RequestPage, name='request'),
-    path('vieworders', views.view_orders, name='vieworders'),
-
-
+    path('workerorders', views.worker_view_orders, name='workerorders'),
 ]

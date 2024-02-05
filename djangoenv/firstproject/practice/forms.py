@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 from django.forms import ModelForm
-from .models import Student, FoodItem, Request, CanteenWorker
+from .models import Student, FoodItem, Request
 
 class CreateUserForm(UserCreationForm):
     phone_number = forms.CharField(max_length=15, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'}))
@@ -13,7 +13,7 @@ class CreateUserForm(UserCreationForm):
 class StudentForm(ModelForm):
     class Meta:
         model = Student
-        fields = ('Parent', 'Student_Name', 'Student_Gender', 'Student_Race', 'Student_Grade')
+        fields = ('Student_Name', 'Student_Gender', 'Student_Race', 'Student_Grade')
 
 class FoodItemForm(ModelForm):
     class Meta:

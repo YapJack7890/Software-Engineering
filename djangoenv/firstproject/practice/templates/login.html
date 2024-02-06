@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% block content %}
 <html>
     <head>
         <meta charset="utf-8">
@@ -13,14 +14,16 @@
         <h1>CANTEEN FOOD RESERVATION</h1>
       </header>   
           <h2>Login</h2>
-          <form action="home" class="textbox">
-            <input type="text" id="lusername" name="lusername" placeholder="USERNAME....."
+          <form action="" method="POST" class="textbox">
+            {% csrf_token %}
+            {% comment %} <input type="text" id="lusername" name="lusername" placeholder="USERNAME....."
             title="Incorrect Username" required>
             
             <input type="password" id="lpassword" name="lpassword" placeholder="PASSWORD....."
             title="Incorrect Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
             <br>
-            <input type="submit" value="Login" onclick="login()">
+            <input type="submit" value="Login" onclick="login()"> {% endcomment %}
+
           </form>
           <div class= "textlink">
             <a href="forget-password.html" class = "forget-password">Forget Password</a>
@@ -31,3 +34,4 @@
         <script src="js/login.js" async defer></script>
     </body>
 </html>
+{% endblock content %}

@@ -56,12 +56,12 @@
         <input type="password2" placeholder="CONFIRM PASSWORD......"/>
     -->
         <input type="submit" value="Register" />
-        <a href="forget-password.html">forget</a>
+        <a href="{% url 'reset_password' %}">forget</a>
 
     </form>
 
     <p>login</p>
-    <a href="{%url 'login'%}">Login</a>
+    <a href="{% url 'login' %}">Login</a>
 
     <body>
         {% if messages %}

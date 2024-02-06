@@ -49,4 +49,7 @@ urlpatterns = [
     #Canteen Worker Page
      path('request', views.RequestPage, name='request'),
 #     path('workerorders', views.worker_view_orders, name='workerorders'),
+
+     #QR Code
+     path('qrcode/<int:order_id>/', views.generate_qrcode, name='generate_qrcode'),
 ]

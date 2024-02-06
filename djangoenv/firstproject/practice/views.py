@@ -9,6 +9,9 @@ from .forms import StudentForm, RequestForm, FoodItemForm
 from django.views import View
 from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
+from django.http import HttpResponse
+import qrcode
+from io import BytesIO
 
 #Jakie: Jak12345@
 # Create your views here.
@@ -467,3 +470,39 @@ def worker_register(request):
 
 def forget_password(request):
     return render(request, 'forget-password.html')
+
+def generate_qrcode(request, order_id):
+    # Get the order based on the provided order_id
+    order = Order.objects.get(id=order_id)
+    
+    # Create a QR code instance
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(order.id)
+    qr.make(fit=True)
+    
+    img = qr.make_image(fill_color="black", back_color="white")
+    
+    # Save the imamge into memory
+    response = BytesIO()
+    img.save(response, 'PNG')
+    response.seek(0)
+    
+    # Return the image as an HTTP response
+    return HttpResponse(response, content_type='image/png')
+
+def get_order(request, order_id):
+    # Fetch the order by id
+    try:
+        order = Order.objects.get(id=order_id)
+    except Order.DoesNotExist:
+        return HttpResponse('Order not found', status=404)
+
+    # For example, you might return the order details as an HTTP response
+    response = f"Order ID: {order.id}\nTotal Price: {order.Order_Status}"
+    return HttpResponse(response)
+

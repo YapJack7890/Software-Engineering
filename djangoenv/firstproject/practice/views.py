@@ -324,11 +324,36 @@ def place_order(request, cart_id):
     return JsonResponse({'success': True, 'message': 'Order placed successfully', 'student_id': student_id})
     
 #Below functions are for CanteenWorker page
+@user_passes_test(is_canteen_worker, login_url='login')
+def view_orders_canteen(request):
 
-        # Return a simple HTML response (this can be improved with templates)
-        return render(request, 'checkout.html', {'cart_data': cart_data, 'cart': cart, 'cart_item': cart_item, 'total_price': total_price})
+    orders = Order.objects.all()  # Fetch all Order objects
 
-@login_required(login_url='register')
+    orders_data = []
+
+    for order in orders:
+        order_items = OrderItem.objects.filter(order=order)
+
+        order_data = {
+            'order_id': order.id,
+            'total_price': order.order_total_price,
+            'order_items': [],
+        }
+
+        for order_item in order_items:
+            item_data = {
+                'food_item_name': order_item.order_item.Food_Name,
+                'quantity': order_item.orderitem_quantity,
+                'total_price': order_item.order_item_total_price,
+            }
+            order_data['order_items'].append(item_data)
+
+        orders_data.append(order_data)
+
+    # Pass data to the template
+    context = {'orders_data': orders_data}
+    return render(request, 'canteen-orderlist.html', context)
+
 @user_passes_test(is_canteen_worker, login_url='login')
 def RequestPage(request):
     form = RequestForm()
@@ -344,25 +369,7 @@ def RequestPage(request):
              messages.error(request, 'An error has occurred')
 
 
-    return render(request, 'request.html', {'form':form})
-
-#Below functions are for admin page
-@user_passes_test(is_superuser, login_url='login')
-def FoodItemPage(request):
-    form = FoodItemForm()
-    
-    if request.method == 'POST':
-        form = FoodItemForm(request.POST)
-        if form.is_valid():
-            #user = form.save(commit=False)
-            form.save()
-            #login(request, form)
-            return redirect('admin-menu')
-        else:
-             messages.error(request, 'An error has occurred')
-
-
-    return render(request, 'addfooditem.html', {'form':form})
+    return render(request, 'canteen-request.html', {'form':form})
     
 @user_passes_test(is_superuser, login_url='login')
 def updateFoodItem(request, pk):

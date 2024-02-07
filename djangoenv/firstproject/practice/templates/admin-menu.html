@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+{% load static %}
 <html>
     <head>
         <meta charset="utf-8">
@@ -7,19 +7,19 @@
         <title>Admin Menu</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/admin-menu.css">
+        <link rel="stylesheet" href="{% static 'css/admin-menu.css' %}">
 
     </head>
     <body>
         <header>
             <h1>CANTEEN FOOD RESERVATION</h1>
-            <a href="#"><img src="image/bell.png" alt="logo" id="notif"></a>
+            <a href="#"><img src="{% static 'image/bell.png' %}" alt="logo" id="notif"></a>
         </header>
         <nav>
-            <a href="admin-menu.html" class ="menu"><img src="image/Menu Selected.png">MENU</a>
-            <a href="admin-orderlist.html" class="orderlist"><img src="image/Order.png">ORDERLIST</a>
-            <a href="admin-request.html" class="request"><img src="image/Change.png">REQUEST</a>
-            <a href="login.html" class="logout" id="logout"><img src="image/Logout.png">LOGOUT</a>
+            <a href="{% url 'admin-menu' %}" class ="menu"><img src="{% static 'image/Menu Selected.png' %}">MENU</a>
+            <a href="{% url 'admin-orderlist' %}" class="orderlist"><img src="{% static 'image/Order.png' %}">ORDERLIST</a>
+            <a href="{% url 'admin-request' %}" class="request"><img src="{% static 'image/Change.png' %}">REQUEST</a>
+            <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>            
         </nav>
         <main id="main">
             <button id="add-menu">+ Menu</button>
@@ -38,17 +38,23 @@
                 </form>
             </div>
             <div id="menu">
-                <img src="image/GyatDamn.jpg" id="imageclick">
-                <div id="blueP">
-                    <p>GyatDamn</p>
-                </div>
-                <div id="bluebox">
-                    <label class="switch">
-                    <input type ="checkbox">
-                    <span class="slider round"></span><br>
-                </label>
-                <p>RM 5.00</p>
-                </div>
+                {% for fooditem in fooditems %}
+                <form action="{% url 'toggle-availability' fooditem.id %}" method="POST">
+                    {% csrf_token %}
+                    <img src="{{ fooditem.image.url }}" id="imageclick">
+                    <div id="blueP">
+                        <p>{{fooditem.Food_Name}}</p>
+                    </div>
+                    <div id="bluebox">
+                        <label class="switch">
+                            <input type="checkbox" name="availability" {% if fooditem.Food_Availability %}checked{% endif %} onchange="this.form.submit()">
+                            <span class="slider round"></span><br>
+                        </label>
+                        <p>{{ fooditem.Food_Price }}</p>
+                    </div>
+                </form>
+                {% endfor %}
+            </div>
             </div>
             <div id="item-info" style="display:none">
                 <form action="" id="edit-menu"> 
@@ -77,6 +83,6 @@
             </div>
         </main>
         
-        <script src="js/admin-menu.js" async defer></script>
+        <script src="{% static 'js/admin-menu.js' %}%" async defer></script>
     </body>
 </html>

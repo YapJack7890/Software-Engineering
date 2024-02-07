@@ -18,17 +18,15 @@
                 <form action="" method="POST" class="textbox">
                   {% csrf_token %}
                   {{form.as_p}}
-                   <input type= "text" placeholder="USERNAME....." id="username" name="username" required>
+                   {% comment %} <input type= "text" placeholder="USERNAME....." id="username" name="username" required>
                   <input type="email" placeholder="EMAIL....." id="email" name="email" 
                   pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" title="Please fill in the correct format" required>
-                  <input type="tel" placeholder="PHONE NUMBER.....{6012-345-6789}" id="phoneNum" name="phoneNum" 
-                  pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" required>
                   <input type="password" placeholder="PASSWORD....." id="password" name="password" 
                   title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
                   <input type="password" placeholder="RETYPE PASSWORD....." id="retypePassword" name="retypePassword" 
                 title="Must be the same as the password" required> 
-                  <br>
-                  <input type="submit" value="Register now" onclick=" matchPassword() ">
+                  <br> {% endcomment %}
+                  <input type="submit" value="Register" onclick=" matchPassword() ">
                 </form>
             <script src="{% static 'js/register.js'%}" async defer></script>
         </body>

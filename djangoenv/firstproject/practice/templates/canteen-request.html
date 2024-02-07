@@ -21,17 +21,30 @@
     <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
 </nav>
 <main>
-    <form action="" id="request-form" method="POST" enctype="multipart/form-data">
+    <form action="" method="POST">
         {% csrf_token %}
-        <label for="image-file" id="image-label">Upload Image</label>
-        <input type="file" multiple accept="image/*" id="image-file" name="image-file" required>
-        <input type="text" placeholder="Request Tittle" id="request-tittle" name="request-tittle" required><br>
-        <input type="text" placeholder="Food Name" id="food-name" name="food-name" required><br>
-        <input type="text" placeholder="Ingredient list" id="ingredient-list" name="ingredient-list" required><br>
-        <textarea name="request-description" id="request-description" cols="30" rows="10" placeholder="Request Description" required></textarea><br>
-        <input type="text" placeholder="Price" id="price" name="price" required><br>
-        <input type="submit" value="Submit" id="submit"><br>
-        <input type="reset" value="Discard" id="discard">
+        <div>
+            <label for="id_Student_Name">Student Name:</label>
+            {{ form.Request_Title }}
+        </div>
+        <div>
+            <label for="id_Student_Name">Student Name:</label>
+            {{ form.RequestFood_Name }}
+        </div>
+        <div>
+            <label>Student Gender:</label>
+            {{ form.RequestFood_Price }}
+        </div>
+        <div>
+            <label>Student Race:</label>
+            {{ form.RequestIngredient_List }}
+        </div>
+        <div>
+            <label>Student Grade:</label>
+            {{ form.RequestFood_Description }}
+        </div>
+        <input type="reset" value="Cancel" id="cancel">
+        <input type="submit" value="ADD" id="adder">
     </form>
     <div id="notification" style="display:none"></div>
 </main>

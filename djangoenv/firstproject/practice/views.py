@@ -470,6 +470,8 @@ def worker_register(request):
 
     return render(request, 'worker_register.html', {'form':workerform})
 
+#Yap Choo Kath Moon
+#1211102270
 def forget_password(request):
     return render(request, 'forget-password.html')
 

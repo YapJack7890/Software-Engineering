@@ -1,29 +1,38 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Menu</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/user-menu.css">
-    </head>
-    <body>
-        <header>
-            <h1>CANTEEN FOOD RESERVATION</h1>
-            <a href=""><img src="image/cart.png" alt="logo"></a>
-        </header>
-        <nav>
-            <a href="user-profile.html" class="home"><img src="image/Home Page.png">HOME</a>
-            <a href="user-menu.html" class ="menu"><img src="image/Menu Selected.png">MENU</a>
-            <a href="login.html" class="logout" id="logout"><img src="image/Logout.png">LOGOUT</a>
-        </nav>
-        <main>
-            <div id="userMenu">
-
-            </div>
-        </main>
-        
-        <script src="js/user-menu.js" async defer></script>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>cart</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+</head>
+<body>
+    <header>
+        <h1>CART</h1>
+        <a href="{% url 'cart' student_id=student_id %}"><img src="{% static 'image/cart.png' %}" alt="logo"></a>
+    </header>
+    <nav>
+        <a href="{% url 'user-profile' %}" class="home"><img src="{% static 'image/Home Page.png' %}">HOME</a>
+        <a href="{% url 'user-menu' student_id=student_id %}" class="menu"><img src="{% static 'image/Menu Selected.png' %}">MENU</a>
+        <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
+    </nav>
+    <main>
+        <div id="top-cart">
+            <p>ITEMS</p>
+            <p>PRICE</p>
+            <p>QTY</p>
+            <p>SUBTOTAL</p>
+        </div>
+        <div id="bottom-cart">
+            <button id="cart-cancel">CANCEL ORDER</button>
+            <p>TOTAL: </p>
+            <button id="cart-checkout">CHECKOUT</button>
+        </div>
+    </main>
+    
+    <script src="{% static 'js/cart.js' %}" async defer></script>
+</body>
 </html>

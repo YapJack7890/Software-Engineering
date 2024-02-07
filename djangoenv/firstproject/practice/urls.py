@@ -52,5 +52,6 @@ urlpatterns = [
 #     path('workerorders', views.worker_view_orders, name='workerorders'),
 
      #QR Code
-     path('qrcode/<int:order_id>/', views.generate_qrcode, name='generate_qrcode'),
+    path('canteen-request', views.RequestPage, name='canteen-request'),
+    path('canteen-orderlist', views.view_orders_canteen, name='canteen-orderlist'),
 ]

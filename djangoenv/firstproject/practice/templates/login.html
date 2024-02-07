@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% block content %}
+{% load static %}
 <html>
     <head>
         <meta charset="utf-8">
@@ -7,7 +8,7 @@
         <title>Login</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/login.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
     </head>
     <body>
       <header>
@@ -16,13 +17,13 @@
           <h2>Login</h2>
           <form action="" method="POST" class="textbox">
             {% csrf_token %}
-            {% comment %} <input type="text" id="lusername" name="lusername" placeholder="USERNAME....."
+            <input type="text" id="lusername" name="lusername" placeholder="USERNAME....."
             title="Incorrect Username" required>
             
             <input type="password" id="lpassword" name="lpassword" placeholder="PASSWORD....."
             title="Incorrect Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
             <br>
-            <input type="submit" value="Login" onclick="login()"> {% endcomment %}
+            <input type="submit" value="Login"> 
 
           </form>
           <div class= "textlink">
@@ -31,7 +32,7 @@
           </div>
       </div>
 
-        <script src="js/login.js" async defer></script>
+        <script src="{% static 'js/login.js' %}" async defer></script>
     </body>
 </html>
 {% endblock content %}

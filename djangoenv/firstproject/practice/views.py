@@ -40,7 +40,7 @@ def registerPage(request):
         else:
              messages.error(request, 'An error has occurred')
 
-    return render(request, 'register_login.html', {'form':form})
+    return render(request, 'register.html', {'form':form})
 
 def loginPage(request):
     page = 'login'
@@ -69,7 +69,7 @@ def loginPage(request):
             messages.error(request, "Invalid username or password")
 
     context = {'page': page}
-    return render(request, 'register_login.html', context)
+    return render(request, 'login.html', context)
 
 def logoutUser(request):
     logout(request)

@@ -25,6 +25,30 @@ document.getElementById('profile-link').addEventListener('click', function() {
     document.getElementById('history-link').style.color = '#000';
 });
 
+document.getElementById('profile-link').addEventListener('mouseover', function() {
+    document.getElementById('profile-link').style.color = '#A97C4E'; 
+});
+
+document.getElementById('profile-link').addEventListener('mouseout', function() {
+    if (document.getElementById('profile-section').style.display == 'block') {
+        document.getElementById('profile-link').style.color = '#A97C4E';
+    } else {
+        document.getElementById('profile-link').style.color = '#000';
+    }
+});
+
+document.getElementById('history-link').addEventListener('mouseover', function() {
+    document.getElementById('history-link').style.color = '#A97C4E'; 
+});
+
+document.getElementById('history-link').addEventListener('mouseout', function() {
+    if (document.getElementById('history-section').style.display == 'block') {
+        document.getElementById('history-link').style.color = '#A97C4E';
+    } else {
+        document.getElementById('history-link').style.color = '#000';
+    }
+});
+
 document.getElementById('history-link').addEventListener('click', function() {
     document.getElementById('profile-section').style.display = 'none';
     document.getElementById('history-section').style.display = 'block';
@@ -64,19 +88,18 @@ addStudentButton.addEventListener('click', function() {
     formDiv.style.display = 'flex';
 });
 
-form.addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the form from submitting normally
-
-    var formData = new FormData(form);
-    
-
-    // Display the form data on the profile div
-    formDiv.style.display = 'none';
-    form.reset();
-    displayFormData(formData);
-});
-
 cancelButton.addEventListener('click', function() {
     formDiv.style.display = 'none';
 });
+
+var button = document.getElementById('editButton');
+    button.addEventListener('click', function() {
+        window.location.href = "{% url 'editstudent' student.id %}";
+    });
+
+var menuButton = document.getElementById('menuButton');
+    menuButton.addEventListener('click', function() {
+        window.location.href = "{% url 'menu' student.id %}";
+    });
+
 

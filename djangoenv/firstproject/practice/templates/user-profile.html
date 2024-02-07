@@ -26,17 +26,27 @@
         {% for student in students %}
             {% for cart in carts %}
             {% if student.id == cart.student.id %}
-                                <tr>
-                                    <td><a href="{% url 'menu' student.id %}">{{ student.Student_Name }}</a></td>
-                                    <td>{{ student.Student_Gender }}</td>
-                                    <td>{{ student.Student_Race }}</td>
-                                    <td>{{ student.Student_Grade }}</td>
-                                    <a href="{% url 'editstudent' student.id %}">Edit</a>
-                                    <td>
-                                        <hr>
-                                    </td>
-                                </tr>
-                            {% endif %}
+            <table>
+                <tr>
+                    <td>{{ student.Student_Name }}</td>
+                </tr>
+                <tr>
+                    <td>{{ student.Student_Gender }}</td>
+                </tr>
+                <tr>
+                    <td>{{ student.Student_Race }}</td>
+                </tr>
+                <tr>
+                    <td>{{ student.Student_Grade }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <button id="menuButton">Menu</button>
+                        <button id="editButton">Edit</button>
+                    </td>
+                </tr>
+            </table>
+            {% endif %}
             {% endfor %}
         {% endfor %}
         <div id="display-form">

@@ -292,6 +292,59 @@ h2{
     justify-content: space-between; 
     background-color: rgba(175, 229, 233, 0.30);
 
+}
 
-    ;
+table{
+    border: 1px solid black;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    margin-top: 20px;
+    font-family: Quicksand;
+    text-align: center;
+    font-weight: bold;
+    font-size: 23px;
+}
+
+th{
+    background-color: #A3E8ED;
+}
+
+td{
+    padding: 10px;
+}
+
+#editButton{
+    background-color: #A3E8ED;
+    cursor: pointer;
+    font-family: Quicksand;
+    font-size: 23px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    font-weight: bold;
+    width: 25%;
+}
+
+#editButton:hover{
+    background-color: #519ea3;
+}
+
+#menuButton{
+    background-color: #18CDA3;
+    cursor: pointer;
+    font-family: Quicksand;
+    font-size: 23px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    font-weight: bold;
+    width: 25%;
+}
+
+#menuButton:hover{
+    background-color: #259e82;
 }

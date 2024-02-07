@@ -12,6 +12,8 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 import qrcode
 from io import BytesIO
+from PIL import Image
+from pyzbar.pyzbar import decode
 
 #Jakie: Jak12345@
 # Create your views here.
@@ -506,3 +508,23 @@ def get_order(request, order_id):
     response = f"Order ID: {order.id}\nTotal Price: {order.Order_Status}"
     return HttpResponse(response)
 
+def scan_qrcode(image_path):
+    # Open the image file
+    img = Image.open(image_path)
+    
+    # Decode the QR code
+    decoded_data = decode(img)
+    
+    if decoded_data:
+        # Get the data from the first QR code found
+        qr_code_data = decoded_data[0].data.decode('utf-8')
+        
+        # Try to covert the data to an integer
+        try:
+            return int(qr_code_data)
+        except ValueError:
+            print("The decoded data is not an integer")
+            return None
+    
+    #If no QR code is found, return None
+    return None

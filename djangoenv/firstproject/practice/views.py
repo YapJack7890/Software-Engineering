@@ -36,7 +36,7 @@ def registerPage(request):
             user = form.save(commit=False)
             user.save()
             login(request, user)
-            #return redirect('home')
+            return redirect('user-profile')
         else:
              messages.error(request, 'An error has occurred')
 
@@ -60,17 +60,17 @@ def loginPage(request):
             elif user.is_staff:
                 # User is a valid CanteenWorker
                 login(request, user)
-                return redirect("vieworders")
+                return redirect("canteen-request")
             else:
                 # User is a regular user
                 login(request, user)
-                return redirect('home') 
+                return redirect('user-profile') 
         else:
             messages.error(request, "Invalid username or password")
 
     context = {'page': page}
     return render(request, 'login.html', context)
-
+    
 def logoutUser(request):
     logout(request)
     return redirect('register')

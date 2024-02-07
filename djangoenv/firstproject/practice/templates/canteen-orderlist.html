@@ -4,33 +4,31 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Order List</title>
+    <title>Canteen Order List</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'css/admin-orderlist.css' %}">
+    <link rel="stylesheet" href="{% static 'css/canteen-orderlist.css' %}">
 </head>
 <body>
-    <header>
-        <h1>CANTEEN FOOD RESERVATION</h1>
-        <a href="#"><img src="{% static 'image/bell.png' %}" alt="logo" id="notif"></a>
-    </header>
-    <nav>
-        <a href="admin-menu" class ="menu"><img src="{% static 'image/Menu.png' %}">MENU</a>
-        <a href="admin-orderlist" class="orderlist"><img src="{% static 'image/Order Select.png' %}">ORDERLIST</a>
-        <a href="admin-request" class="request"><img src="{% static 'image/Change.png' %}">REQUEST</a>
-        <a href="logout" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
-    </nav>
-    <main>
-        <div id="order-top">
-            <p>Order ID</p>
-            <p>Food Items</p>
-            <p>Status</p>
-        </div>
-        <div id="notification" style="display:none">
+<header>
+    <h1>CANTEEN FOOD RESERVATION</h1>
+    <a href="#"><img src="{% static 'image/bell.png' %}" alt="logo" id="notif"></a>
+</header>
+<nav>
+    <a href="{% url 'canteen-orderlist' %}" class="orderlist"><img src="{% static 'image/Order Select.png' %}">ORDERLIST</a>
+    <a href="{% url 'canteen-request' %}" class="request"><img src="{% static 'image/Change.png' %}">REQUEST</a>
+    <a href="{% url 'canteen-qrcode' %}" class="qrcode"><img src="{% static 'image/Qr Code.png' %}"><br>QR-CODE SCAN</a>
+    <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
+</nav>
+<main>
+    <div id="order-top">
+        <p>Order ID</p>
+        <p>Food Items</p>
+        <p>Status</p>
+    </div>
+    <div id="notification" style="display:none"></div>
+</main>
 
-        </div>
-    </main>
-
-    <script src="js/admin-orderlist.js" async defer></script>
+<script src="{% static 'js/canteen-orderlist.js' %}" async defer></script>
 </body>
 </html>

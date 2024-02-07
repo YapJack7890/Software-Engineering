@@ -133,7 +133,7 @@ def menu(request, student_id):
 
     # Fetch all FoodItem objects
     fooditems = FoodItem.objects.all()  # Fetch all FoodItem objects
-    return render(request, 'menu.html', {'fooditems': fooditems, 'current_student': current_student})
+    return render(request, 'user-menu.html', {'fooditems': fooditems, 'current_student': current_student})
 
 @login_required(login_url='register')
 def foodItem(request, pk, student_id):
@@ -192,7 +192,6 @@ def add_to_cart(request, pk, student_id):
 
 @login_required(login_url='register')
 def display_cart(request, student_id):
-    try:
         # Retrieve the Cart instance using the provided student_id
         cart = get_object_or_404(Cart, student_id=student_id)
 
@@ -216,12 +215,8 @@ def display_cart(request, student_id):
             total_price += cart_item.total_price()
 
         # Return a simple HTML response (this can be improved with templates)
-        return render(request, 'display_cart.html', {'student_id': student_id, 'cart_data': cart_data, 'cart': cart, 'cart_item': cart_item, 'total_price': total_price})
+        return render(request, 'cart.html', {'student_id': student_id, 'cart_data': cart_data, 'cart': cart, 'cart_item': cart_item, 'total_price': total_price})
 
-    except Cart.DoesNotExist:
-        # Handle the case where the Cart with the provided student_id does not exist
-        return render(request, 'cart_not_found.html')
-    
 @login_required(login_url='register')
 def increase_cart_item_quantity(request, cart_item_id):
     cart_item = get_object_or_404(CartItem, pk=cart_item_id)

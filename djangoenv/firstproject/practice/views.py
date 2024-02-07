@@ -56,7 +56,7 @@ def loginPage(request):
             if user.is_superuser:
                 # User is a superuser
                 login(request, user)
-                return redirect('adminmenu')  
+                return redirect('admin-menu')  
             elif user.is_staff:
                 # User is a valid CanteenWorker
                 login(request, user)
@@ -237,8 +237,6 @@ def decrease_cart_item_quantity(request, cart_item_id):
         cart_item.save()
     else: 
         # If the quantity is 1, remove the item from the cart
-        cart_item.delete()
-
     return redirect('display_cart', student_id=cart_item.cart.student.id)
 
 @login_required(login_url='register')
@@ -254,6 +252,8 @@ def order_history(request):
     students = Student.objects.filter(Parent=current_user)
 
     order_items_by_order = {}
+        cart_item.delete()
+
 
     for student in students:
         order_items = OrderItem.objects.filter(order__cart__student=student).select_related('order__cart__student', 'order_item')
@@ -292,11 +292,6 @@ def checkout(request, cart_id):
 
             # Accumulate the total price
             total_price += cart_item.total_price()
-
-        # Return a simple HTML response (this can be improved with templates)
-        return render(request, 'checkout.html', {'cart_data': cart_data, 'cart': cart, 'cart_item': cart_item, 'total_price': total_price})
-
-@login_required(login_url='register')
 def place_order(request, cart_id):
     # Get the product based on the product_id
     cart = get_object_or_404(Cart, id=cart_id)
@@ -329,6 +324,11 @@ def place_order(request, cart_id):
     return JsonResponse({'success': True, 'message': 'Order placed successfully', 'student_id': student_id})
     
 #Below functions are for CanteenWorker page
+
+        # Return a simple HTML response (this can be improved with templates)
+        return render(request, 'checkout.html', {'cart_data': cart_data, 'cart': cart, 'cart_item': cart_item, 'total_price': total_price})
+
+@login_required(login_url='register')
 @user_passes_test(is_canteen_worker, login_url='login')
 def RequestPage(request):
     form = RequestForm()
@@ -346,6 +346,24 @@ def RequestPage(request):
 
     return render(request, 'request.html', {'form':form})
 
+#Below functions are for admin page
+@user_passes_test(is_superuser, login_url='login')
+def FoodItemPage(request):
+    form = FoodItemForm()
+    
+    if request.method == 'POST':
+        form = FoodItemForm(request.POST)
+        if form.is_valid():
+            #user = form.save(commit=False)
+            form.save()
+            #login(request, form)
+            return redirect('admin-menu')
+        else:
+             messages.error(request, 'An error has occurred')
+
+
+    return render(request, 'addfooditem.html', {'form':form})
+    
 @user_passes_test(is_superuser, login_url='login')
 def updateFoodItem(request, pk):
     fooditem = FoodItem.objects.get(id=pk)
@@ -354,7 +372,7 @@ def updateFoodItem(request, pk):
         form = FoodItemForm(request.POST, instance=fooditem)
         if form.is_valid():
             form.save()
-            return redirect('adminmenu')
+            return redirect('admin-menu')
         else:
              messages.error(request, 'An error has occurred')
         
@@ -366,7 +384,7 @@ def deleteFoodItem(request, pk):
     fooditem = FoodItem.objects.get(id=pk)
     if request.method == 'POST':
         fooditem.delete()
-        return redirect('adminmenu')
+        return redirect('admin-menu')
     context = {'obj': fooditem}
     return render(request, 'delete.html', context)
 
@@ -374,7 +392,7 @@ def deleteFoodItem(request, pk):
 def adminmenu(request):
 
     fooditems = FoodItem.objects.all()  # Fetch all FoodItem objects
-    return render(request, 'adminmenu.html', {'fooditems': fooditems})
+    return render(request, 'admin-menu.html', {'fooditems': fooditems})
 
 def adminfoodItem(request, pk):
     # Fetch the FoodItem object based on the provided pk
@@ -382,6 +400,19 @@ def adminfoodItem(request, pk):
 
     context = {'fooditem': fooditem, }
     return render(request, 'adminfooditem.html', context)
+
+def toggle_availability(request, fooditem_id):
+    # Retrieve the FoodItem object
+    fooditem = FoodItem.objects.get(pk=fooditem_id)
+    
+    # Toggle the availability
+    fooditem.Food_Availability = not fooditem.Food_Availability
+    
+    # Save the changes
+    fooditem.save()
+    
+    # Redirect back to the menu page
+    return redirect('admin-menu')
 
 @user_passes_test(is_canteen_worker_or_superuser, login_url='login')
 def view_orders(request):
@@ -411,7 +442,7 @@ def view_orders(request):
 
     # Pass data to the template
     context = {'orders_data': orders_data}
-    return render(request, 'vieworders.html', context)
+    return render(request, 'admin-orderlist.html', context)
     
 @user_passes_test(is_superuser, login_url='login')
 def request_list(request):
@@ -429,7 +460,6 @@ def request_list(request):
                 if action == 'accept':
                     print("Accepting request...")
                     # Assuming FoodItem has fields like 'name' and 'description'
-                    FoodItem.objects.create(Food_Name=request_obj.RequestFood_Name, 
                                             Food_Price=request_obj.RequestFood_Price,
                                             Ingredient_List=request_obj.RequestIngredient_List, 
                                             Food_Description=request_obj.RequestFood_Description)
@@ -441,13 +471,14 @@ def request_list(request):
             except Request.DoesNotExist:
                 pass
     requests = Request.objects.all()
+                    FoodItem.objects.create(Food_Name=request_obj.RequestFood_Name, 
     return render(request, 'request_list.html', {'requests': requests})
 
 @user_passes_test(is_superuser, login_url='login')
 def request_details(request, pk):
     request_details = Request.objects.get(id=pk)
     context = {'request_details': request_details}
-    return render(request, 'request_details.html', context)
+    return render(request, 'admin-request.html', {'requests': requests})
 
 @user_passes_test(is_superuser, login_url='login')
 def worker_register(request):
@@ -458,7 +489,7 @@ def worker_register(request):
             worker_form = workerform.save(commit=False)
             worker_form.is_staff = True
             worker_form.save()
-            return redirect('adminmenu')
+            return redirect('admin-menu')
         else:
             messages.error(request, 'An error has occurred')
 

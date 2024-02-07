@@ -90,6 +90,17 @@ h2{
     gap: 10px;
 }
 
+.errorMessage {
+    color: red;
+    font-size: 20px;
+    text-align: center;
+    font-family: Quicksand;
+    font-style: normal;
+    line-height: normal;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
 .forget-password {
     text-align: center;
     color: #5AC141;

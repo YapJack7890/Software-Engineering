@@ -1,3 +1,5 @@
+{% block content %}
+{% load static %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,27 +8,29 @@
         <title>Registration</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/register.css">
+        <link rel="stylesheet" href="{% static 'css/register.css'%}">
     </head>
     <body>
         <header>
             <h1>CANTEEN FOOD RESERVATION</h1>
           </header>   
               <h2>registration</h2>
-                <form action="home" class="textbox">
-                  <input type= "text" placeholder="USERNAME....." id="username" name="username" required>
+                <form action="" method="POST" class="textbox">
+                  {% csrf_token %}
+                  {{form.as_p}}
+                   <input type= "text" placeholder="USERNAME....." id="username" name="username" required>
                   <input type="email" placeholder="EMAIL....." id="email" name="email" 
                   pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" title="Please fill in the correct format" required>
                   <input type="tel" placeholder="PHONE NUMBER.....{6012-345-6789}" id="phoneNum" name="phoneNum" 
                   pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" required>
                   <input type="password" placeholder="PASSWORD....." id="password" name="password" 
-                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
                   title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
                   <input type="password" placeholder="RETYPE PASSWORD....." id="retypePassword" name="retypePassword" 
-                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must be the same as the password" required>
+                title="Must be the same as the password" required> 
                   <br>
                   <input type="submit" value="Register now" onclick=" matchPassword() ">
                 </form>
-            <script src="js/register.js" async defer></script>
+            <script src="{% static 'js/register.js'%}" async defer></script>
         </body>
 </html>
+{% endblock content %}

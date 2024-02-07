@@ -21,17 +21,28 @@
             title="Incorrect Username" required>
             
             <input type="password" id="lpassword" name="lpassword" placeholder="PASSWORD....."
-            title="Incorrect Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+            title="Incorrect Password" required>
             <br>
             <input type="submit" value="Login"> 
 
           </form>
           <div class= "textlink">
-            <a href="forget-password.html" class = "forget-password">Forget Password</a>
-            <a href="register.html" class = "sign-up">Sign Up</a>
+            <a href="{% url 'reset_password' %}" class = "forget-password">Forget Password</a>
+            <a href="{% url 'register' %}" class = "sign-up">Sign Up</a>
           </div>
       </div>
+      <div class ="errorMessage">
 
+        {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+        <li></li>{{ message }}</li>
+        {% endfor %}
+  
+        </ul>
+        {% endif %}
+
+      </div>
         <script src="{% static 'js/login.js' %}" async defer></script>
     </body>
 </html>

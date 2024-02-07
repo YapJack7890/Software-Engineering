@@ -46,8 +46,8 @@ def loginPage(request):
     page = 'login'
 
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST.get('lusername')
+        password = request.POST.get('lpassword')
 
         user = authenticate(request, username=username, password=password)
 

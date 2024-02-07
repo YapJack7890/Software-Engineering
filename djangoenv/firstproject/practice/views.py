@@ -36,7 +36,7 @@ def registerPage(request):
             user = form.save(commit=False)
             user.save()
             login(request, user)
-            return redirect('home')
+            #return redirect('home')
         else:
              messages.error(request, 'An error has occurred')
 

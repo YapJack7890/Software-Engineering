@@ -87,7 +87,7 @@ def home(request):
         # Access the related cart for each student
         cart = student.cart
         carts.append(cart)
-    return render(request, 'home.html', {'students': students, 'carts': carts})
+    return render(request, 'user-profile.html', {'students': students, 'carts': carts})
 
 @login_required(login_url='register')
 def studentPage(request):
@@ -104,8 +104,7 @@ def studentPage(request):
         else:
              messages.error(request, 'An error has occurred')
 
-
-    return render(request, 'student.html', {'form':studentform})
+    return render(request, 'user-profile.html', {'form':studentform})
 
 @login_required(login_url='register')
 def editStudent(request, pk):

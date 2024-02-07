@@ -21,7 +21,7 @@ urlpatterns = [
          name="password_reset_complete"),
 
     #Parent Page
-    path('home', views.home, name='home'),
+    path('user-profile', views.home, name='user-profile'),
     path('student', views.studentPage, name='student'),
     path('editstudent/<str:pk>/', views.editStudent, name='editstudent'),
     path('menu/<int:student_id>/', views.menu, name='menu'),

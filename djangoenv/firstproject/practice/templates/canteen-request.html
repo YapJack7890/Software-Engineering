@@ -1,40 +1,41 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Canteen Request</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/canteen-request.css">
-    </head>
-    <body>
-        <header>
-            <h1>CANTEEN FOOD RESERVATION</h1>
-            <a href="#"><img src="image/bell.png" alt="logo" id="notif"></a>
-        </header>
-        <nav>
-            <a href="canteen-orderlist.html" class="orderlist"><img src="image/Order.png">ORDERLIST</a>
-            <a href="canteen-request.html" class="request"><img src="image/Change Select.png">REQUEST</a>
-            <a href="canteen-qrcode.html" class="qrcode"><img src="image/Qr Code.png"><br>QR-CODE SCAN</a>
-            <a href="login.html" class="logout" id="logout"><img src="image/Logout.png">LOGOUT</a>
-        </nav>
-        <main>
-            <form action="" id="request-form">
-                <label for="image-file" id="image-label">Upload Image</label>
-                <input type="file" multiple accept="image/*" id="image-file" required>
-                <input type="text" placeholder="Request Tittle" id="request-tittle" required><br>
-                <input type="text" placeholder="Food Name" id="food-name" required><br>
-                <input type="text" placeholder="Ingredient list" id="ingredient-list" required><br>
-                <textarea name="request-description" id="request-description" cols="30" rows="10" placeholder="Request Description" required></textarea><br>
-                <input type="text" placeholder="Price" id="price" required><br>
-                <input type="submit" value="Submit" id="submit"><br>
-                <input type="reset" value="Discard" id="discard">
-            </form>
-            <div id="notification" style="display:none"></div>
-            
-        </main>
-        
-        <script src="js/canteen-request.js" async defer></script>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Canteen Request</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/canteen-request.css' %}">
+</head>
+<body>
+<header>
+    <h1>CANTEEN FOOD RESERVATION</h1>
+    <a href="#"><img src="{% static 'image/bell.png' %}" alt="logo" id="notif"></a>
+</header>
+<nav>
+    <a href="{% url 'canteen-orderlist' %}" class="orderlist"><img src="{% static 'image/Order.png' %}">ORDERLIST</a>
+    <a href="{% url 'canteen-request' %}" class="request"><img src="{% static 'image/Change Select.png' %}">REQUEST</a>
+    <a href="{% url 'canteen-qrcode' %}" class="qrcode"><img src="{% static 'image/Qr Code.png' %}"><br>QR-CODE SCAN</a>
+    <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
+</nav>
+<main>
+    <form action="" id="request-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="image-file" id="image-label">Upload Image</label>
+        <input type="file" multiple accept="image/*" id="image-file" name="image-file" required>
+        <input type="text" placeholder="Request Tittle" id="request-tittle" name="request-tittle" required><br>
+        <input type="text" placeholder="Food Name" id="food-name" name="food-name" required><br>
+        <input type="text" placeholder="Ingredient list" id="ingredient-list" name="ingredient-list" required><br>
+        <textarea name="request-description" id="request-description" cols="30" rows="10" placeholder="Request Description" required></textarea><br>
+        <input type="text" placeholder="Price" id="price" name="price" required><br>
+        <input type="submit" value="Submit" id="submit"><br>
+        <input type="reset" value="Discard" id="discard">
+    </form>
+    <div id="notification" style="display:none"></div>
+</main>
+
+<script src="{% static 'js/canteen-request.js' %}" async defer></script>
+</body>
 </html>

@@ -91,7 +91,25 @@ def home(request):
              messages.error(request, 'An error has occurred')
 
     current_user = request.user
+
+    current_user = request.user
     students = Student.objects.filter(Parent=current_user)
+
+    order_items_by_order = {}
+
+    for student in students:
+        order_items = OrderItem.objects.filter(order__cart__student=student).select_related('order__cart__student', 'order_item')
+        
+        for order_item in order_items:
+            order = order_item.order
+            #Check if Order is already a key in the dictionary
+            if order not in order_items_by_order:
+                #If not, add a new key with an empty list
+                order_items_by_order[order] = []
+            #Append the current OrderItem to the list associated with the Order
+            order_items_by_order[order].append(order_item)
+
+    #students = Student.objects.filter(Parent=current_user)
     
     # Create a list to store each student's cart
     carts = []
@@ -99,25 +117,8 @@ def home(request):
         # Access the related cart for each student
         cart = student.cart
         carts.append(cart)
-    return render(request, 'user-profile.html', {'students': students, 'carts': carts, 'form':studentform})
-'''
-@login_required(login_url='register')
-def studentPage(request):
+    return render(request, 'user-profile.html', {'order_items_by_order': order_items_by_order, 'students': students, 'carts': carts, 'form':studentform})
     
-    studentform = StudentForm()
-    
-    if request.method == 'POST':
-        studentform = StudentForm(request.POST)
-        if studentform.is_valid():
-            student_form = studentform.save(commit=False)
-            student_form.Parent = request.user
-            student_form.save()
-            return redirect('home')
-        else:
-             messages.error(request, 'An error has occurred')
-
-    return render(request, 'user-profile.html', {'form':studentform})'''
-
 @login_required(login_url='register')
 def editStudent(request, pk):
     student = Student.objects.get(id=pk)
@@ -126,12 +127,12 @@ def editStudent(request, pk):
         form = StudentForm(request.POST, instance=student)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('user-profile')
         else:
              messages.error(request, 'An error has occurred')
         
-    context = {'form': form}
-    return render(request, 'student.html', context)
+    context = {'form': form, 'student': student}
+    return render(request, 'user-profile.html', context)
 
 @login_required(login_url='register')
 def menu(request, student_id):

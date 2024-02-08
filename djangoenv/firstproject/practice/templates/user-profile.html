@@ -23,7 +23,7 @@
         <a id="history-link">Order History</a>
     </div>
     <div id="form-div" style="display:none">
-        <form action="" method="POST" >
+        <form action="{% if student.id %}{% url 'editstudent' pk=student.id %}{% endif %}" method="POST" >
             {% csrf_token %}
             <div>
                 <label for="id_Student_Name">Student Name:</label>
@@ -49,8 +49,9 @@
     </div>
     <div id="profile-section">
         {% for student in students %}
-            {% for cart in carts %}
-            {% if student.id == cart.student.id %}
+    {% for cart in carts %}
+        {% if student.id == cart.student.id %}
+        <div style="display: flex; justify-content: center;">
             <table>
                 <tr>
                     <th>{{ student.Student_Name }}</th>
@@ -67,13 +68,15 @@
                 <tr>
                     <td>
                         <a href="{% url 'user-menu' student.id %}"><button id="menuButton">Menu</button></a>
-                        <a href="{% url 'editstudent' student.id %}"><button id="editButton">Edit</button></a>
+                        <a href="{% if student.id %}{% url 'editstudent' pk=student.id %}{% endif %}"><button id="editButton">Edit</button></a>
                     </td>
                 </tr>
             </table>
-            {% endif %}
-            {% endfor %}
-        {% endfor %}
+        </div>
+        
+        {% endif %}
+    {% endfor %}
+{% endfor %}
         <div id="display-form">
         </div>
         <div id="data-container"></div>
@@ -89,7 +92,7 @@
         </div>
         {% if order_items_by_order %}
             {% for order, order_items in order_items_by_order.items %}
-                <div>
+                <div class="order">
                     <h2>Order ID: {{ order.id }}</h2>
                     <p>Order Status: {{ order.Order_Status }}</p>
                     <p>Total Price: ${{ order.order_total_price }}</p>

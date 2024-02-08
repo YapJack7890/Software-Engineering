@@ -113,7 +113,11 @@
         {% endif %}
     </div>
 </main>
-
+<script>
+    var studentURL = "{% url 'student' %}";
+    {% comment %} var editURL = "{% url 'editstudent' student.id %}";
+    var menuURL = "{% url 'menu' student.id %}";     {% endcomment %}
+</script>
 <script src="{% static 'js/user-profile.js' %}" async defer></script>
 </body>
 </html>

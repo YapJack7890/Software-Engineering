@@ -237,7 +237,7 @@ def decrease_cart_item_quantity(request, cart_item_id):
         cart_item.save()
     else: 
         # If the quantity is 1, remove the item from the cart
-    return redirect('display_cart', student_id=cart_item.cart.student.id)
+        return redirect('display_cart', student_id=cart_item.cart.student.id)
 
 @login_required(login_url='register')
 def remove_cart_item(request, cart_item_id):
@@ -252,7 +252,7 @@ def order_history(request):
     students = Student.objects.filter(Parent=current_user)
 
     order_items_by_order = {}
-        cart_item.delete()
+    cart_item.delete()
 
 
     for student in students:
@@ -467,9 +467,9 @@ def request_list(request):
                 if action == 'accept':
                     print("Accepting request...")
                     # Assuming FoodItem has fields like 'name' and 'description'
-                                            Food_Price=request_obj.RequestFood_Price,
-                                            Ingredient_List=request_obj.RequestIngredient_List, 
-                                            Food_Description=request_obj.RequestFood_Description)
+                    Food_Price=request_obj.RequestFood_Price,
+                    Ingredient_List=request_obj.RequestIngredient_List, 
+                    Food_Description=request_obj.RequestFood_Description,
                     request_obj.delete()  # Delete the request after processing
 
                 elif action == 'deny':
@@ -478,7 +478,7 @@ def request_list(request):
             except Request.DoesNotExist:
                 pass
     requests = Request.objects.all()
-                    FoodItem.objects.create(Food_Name=request_obj.RequestFood_Name, 
+    FoodItem.objects.create(Food_Name=request_obj.RequestFood_Name) 
     return render(request, 'request_list.html', {'requests': requests})
 
 @user_passes_test(is_superuser, login_url='login')

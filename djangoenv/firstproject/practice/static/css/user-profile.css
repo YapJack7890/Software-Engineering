@@ -227,7 +227,7 @@ h2{
     
 }
 
-.form-data {
+/* .form-data {
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
@@ -275,7 +275,7 @@ h2{
     font-style: normal;
     font-weight: 400;
     cursor: pointer;
-}
+} */
 
 #history-head{
     display: flex;

@@ -94,12 +94,12 @@ cancelButton.addEventListener('click', function() {
 
 var button = document.getElementById('editButton');
     button.addEventListener('click', function() {
-        window.location.href = "{% url 'editstudent' student.id %}";
+        window.location.href = editURL;
     });
 
 var menuButton = document.getElementById('menuButton');
     menuButton.addEventListener('click', function() {
-        window.location.href = "{% url 'menu' student.id %}";
+        window.location.href = menuURL;
     });
 
 

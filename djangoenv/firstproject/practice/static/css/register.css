@@ -72,3 +72,13 @@ h2{
     font-weight: bold;
     cursor: pointer;
 }
+
+a {
+    color: #000;
+    font-family: Quicksand;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+}

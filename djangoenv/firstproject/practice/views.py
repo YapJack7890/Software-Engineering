@@ -78,6 +78,18 @@ def logoutUser(request):
 #Below functions are for parent page
 @login_required(login_url='register')
 def home(request):
+    studentform = StudentForm()
+    
+    if request.method == 'POST':
+        studentform = StudentForm(request.POST)
+        if studentform.is_valid():
+            student_form = studentform.save(commit=False)
+            student_form.Parent = request.user
+            student_form.save()
+            #return redirect('home')
+        else:
+             messages.error(request, 'An error has occurred')
+
     current_user = request.user
     students = Student.objects.filter(Parent=current_user)
     
@@ -87,8 +99,8 @@ def home(request):
         # Access the related cart for each student
         cart = student.cart
         carts.append(cart)
-    return render(request, 'user-profile.html', {'students': students, 'carts': carts})
-
+    return render(request, 'user-profile.html', {'students': students, 'carts': carts, 'form':studentform})
+'''
 @login_required(login_url='register')
 def studentPage(request):
     
@@ -104,7 +116,7 @@ def studentPage(request):
         else:
              messages.error(request, 'An error has occurred')
 
-    return render(request, 'user-profile.html', {'form':studentform})
+    return render(request, 'user-profile.html', {'form':studentform})'''
 
 @login_required(login_url='register')
 def editStudent(request, pk):

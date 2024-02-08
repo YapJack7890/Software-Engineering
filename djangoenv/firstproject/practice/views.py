@@ -127,12 +127,12 @@ def editStudent(request, pk):
         form = StudentForm(request.POST, instance=student)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('user-profile')
         else:
              messages.error(request, 'An error has occurred')
         
-    context = {'form': form}
-    return render(request, 'student.html', context)
+    context = {'form': form, 'student': student}
+    return render(request, 'user-profile.html', context)
 
 @login_required(login_url='register')
 def menu(request, student_id):

@@ -22,7 +22,7 @@ urlpatterns = [
 
     #Parent Page
     path('user-profile', views.home, name='user-profile'),
-    path('student', views.studentPage, name='student'),
+    path('student', views.home, name='student'),
     path('editstudent/<str:pk>/', views.editStudent, name='editstudent'),
     path('user-menu/<int:student_id>/', views.menu, name='user-menu'),
     path('foodItem/<int:pk>/<int:student_id>/', views.foodItem, name='fooditem'),

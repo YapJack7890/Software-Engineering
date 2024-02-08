@@ -176,6 +176,10 @@ h2{
 
 }
 
+#form-div form{
+    padding: 10px;
+}
+
 #form-div input{
     margin-bottom: 20px;
 }

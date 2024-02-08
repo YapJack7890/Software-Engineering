@@ -52,7 +52,7 @@
         <div id="display-form">
         </div>
         <div id="form-div" style="display:none">
-            <form action="" method="POST">
+            <form action="" method="POST" >
                 {% csrf_token %}
                 <div>
                     <label for="id_Student_Name">Student Name:</label>
@@ -115,8 +115,8 @@
 </main>
 <script>
     var studentURL = "{% url 'student' %}";
-    {% comment %} var editURL = "{% url 'editstudent' student.id %}";
-    var menuURL = "{% url 'menu' student.id %}";     {% endcomment %}
+    var editURL = "{% url 'editstudent' student.id %}";
+    var menuURL = "{% url 'menu' student.id %}";
 </script>
 <script src="{% static 'js/user-profile.js' %}" async defer></script>
 </body>

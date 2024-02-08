@@ -92,14 +92,6 @@ cancelButton.addEventListener('click', function() {
     formDiv.style.display = 'none';
 });
 
-var button = document.getElementById('editButton');
-    button.addEventListener('click', function() {
-        window.location.href = editURL;
-    });
 
-var menuButton = document.getElementById('menuButton');
-    menuButton.addEventListener('click', function() {
-        window.location.href = menuURL;
-    });
 
 

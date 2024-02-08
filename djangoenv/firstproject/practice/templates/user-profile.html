@@ -22,13 +22,38 @@
         <a id="profile-link" style="color:#A97C4E">Profile</a>
         <a id="history-link">Order History</a>
     </div>
+    <div id="form-div" style="display:none">
+        <form action="" method="POST" >
+            {% csrf_token %}
+            <div>
+                <label for="id_Student_Name">Student Name:</label>
+                {{ form.Student_Name }}
+            </div>
+            <div>
+                <label>Student Gender:</label>
+                {{ form.Student_Gender }}
+            </div>
+            <div>
+                <label>Student Race:</label>
+                {{ form.Student_Race }}
+            </div>
+            <div>
+                <label>Student Grade:</label>
+                {{ form.Student_Grade }}
+            </div>
+            
+            <input type="reset" value="Cancel" id="cancel">
+            <input type="submit" value="ADD" id="adder">
+        </form>
+        
+    </div>
     <div id="profile-section">
         {% for student in students %}
             {% for cart in carts %}
             {% if student.id == cart.student.id %}
             <table>
                 <tr>
-                    <td>{{ student.Student_Name }}</td>
+                    <th>{{ student.Student_Name }}</th>
                 </tr>
                 <tr>
                     <td>{{ student.Student_Gender }}</td>
@@ -41,8 +66,8 @@
                 </tr>
                 <tr>
                     <td>
-                        <button id="menuButton">Menu</button>
-                        <button id="editButton">Edit</button>
+                        <a href="{% url 'user-menu' student.id %}"><button id="menuButton">Menu</button></a>
+                        <a href="{% url 'editstudent' student.id %}"><button id="editButton">Edit</button></a>
                     </td>
                 </tr>
             </table>
@@ -50,30 +75,6 @@
             {% endfor %}
         {% endfor %}
         <div id="display-form">
-        </div>
-        <div id="form-div" style="display:none">
-            <form action="" method="POST" >
-                {% csrf_token %}
-                <div>
-                    <label for="id_Student_Name">Student Name:</label>
-                    {{ form.Student_Name }}
-                </div>
-                <div>
-                    <label>Student Gender:</label>
-                    {{ form.Student_Gender }}
-                </div>
-                <div>
-                    <label>Student Race:</label>
-                    {{ form.Student_Race }}
-                </div>
-                <div>
-                    <label>Student Grade:</label>
-                    {{ form.Student_Grade }}
-                </div>
-                <input type="reset" value="Cancel" id="cancel">
-                <input type="submit" value="ADD" id="adder">
-            </form>
-            
         </div>
         <div id="data-container"></div>
         <button id="add">add student</button>
@@ -113,11 +114,7 @@
         {% endif %}
     </div>
 </main>
-<script>
-    var studentURL = "{% url 'student' %}";
-    var editURL = "{% url 'editstudent' student.id %}";
-    var menuURL = "{% url 'menu' student.id %}";
-</script>
+
 <script src="{% static 'js/user-profile.js' %}" async defer></script>
 </body>
 </html>

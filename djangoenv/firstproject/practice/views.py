@@ -202,6 +202,43 @@ def add_to_cart(request, pk, student_id):
         cart_item.save()
         # Redirect to 'menu' with the student_id parameter
     return redirect('user-menu', student_id = student_id)
+
+@login_required(login_url='register')
+def display_cart(request, student_id):
+        # Retrieve the Cart instance using the provided student_id
+        cart = get_object_or_404(Cart, student_id=student_id)
+
+        # Retrieve all CartItem instances associated with the Cart
+        cart_items = CartItem.objects.filter(cart=cart)
+        
+        # Prepare data for rendering (this can be improved with templates)
+        cart_data = []
+        total_price = 0  # Initialize total price
+        cart_item = None  # Initialize cart_item
+        for cart_item in cart_items:
+            item_data = {
+                'id': cart_item.cart_item.id,
+                'name': cart_item.cart_item.Food_Name,
+                'price': cart_item.cart_item.Food_Price,
+                'quantity': cart_item.cartitem_quantity,
+                'total_price': cart_item.total_price(),
+            }
+            cart_data.append(item_data)
+
+            # Accumulate the total price
+            total_price += cart_item.total_price()
+
+        return render(request, 'cart.html', {'student_id': student_id, 'cart_data': cart_data, 'cart': cart, 'cart_item': cart_item, 'total_price': total_price})
+    
+@login_required(login_url='register')
+def increase_cart_item_quantity(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, pk=cart_item_id)
+
+    # Increase the quantity by 1
+    cart_item.cartitem_quantity += 1
+    cart_item.save()
+
+    return redirect('display_cart', student_id=cart_item.cart.student.id)
     
 @login_required(login_url='register')
 def decrease_cart_item_quantity(request, cart_item_id):

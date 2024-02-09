@@ -292,40 +292,15 @@ def order_history(request):
     return render(request, 'user-profile.html', {'order_items_by_order': order_items_by_order})
 
 @login_required(login_url='register')
-def cancel_order(request, cart_id):
-        # Retrieve the Cart instance using the cart_id
-        cart = get_object_or_404(Cart, id=cart_id)
-
-        # Retrieve all CartItem instances associated with the Cart
-        cart_items = CartItem.objects.filter(cart=cart)
-        
-        # Prepare data for rendering
-        cart_data = []
-        total_price = 0  # Initialize total price
-        cart_item = None  # Initialize cart_item
-        for cart_item in cart_items:
-            item_data = {
-                'id': cart_item.cart_item.id,
-                'name': cart_item.cart_item.Food_Name,
-                'quantity': cart_item.cartitem_quantity,
-                'total_price': cart_item.total_price(),
-            }
-            cart_data.append(item_data)
-
-            # Accumulate the total price
-            total_price += cart_item.total_price()
-
-        # Return a simple HTML response (this can be improved with templates)
-        return render(request, 'checkout.html', {'cart_data': cart_data, 'cart': cart, 'cart_item': cart_item, 'total_price': total_price})
-
-@login_required(login_url='register')
 def checkout(request, cart_id):
         # Retrieve the Cart instance using the cart_id
         cart = get_object_or_404(Cart, id=cart_id)
 
         # Retrieve all CartItem instances associated with the Cart
         cart_items = CartItem.objects.filter(cart=cart)
-        
+    
+        if not cart_items.exists():
+            return redirect('cart', student_id=cart.student.id)
         # Prepare data for rendering
         cart_data = []
         total_price = 0  # Initialize total price

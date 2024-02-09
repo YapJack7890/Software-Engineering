@@ -17,7 +17,7 @@
 <nav>
     <a href="{% url 'canteen-orderlist' %}" class="orderlist"><img src="{% static 'image/Order Select.png' %}">ORDERLIST</a>
     <a href="{% url 'canteen-request' %}" class="request"><img src="{% static 'image/Change.png' %}">REQUEST</a>
-    <a href="{% url 'canteen-qrcode' %}" class="qrcode"><img src="{% static 'image/Qr Code.png' %}"><br>QR-CODE SCAN</a>
+    
     <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
 </nav>
 <main>
@@ -25,6 +25,26 @@
         <p>Order ID</p>
         <p>Food Items</p>
         <p>Status</p>
+    </div>
+    <div>
+        {% for order_data in orders_data %}
+            <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+                <p><strong>Order ID:</strong> {{ order_data.order_id }}</p>
+                <p><strong>Total Price:</strong> {{ order_data.total_price }}</p>
+    
+                <h2>Order Items</h2>
+                <ul>
+                    {% for item in order_data.order_items %}
+                        <li>
+                            <p><strong>Food Item:</strong> {{ item.food_item_name }}</p>
+                            <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                            <p><strong>Total Price:</strong> {{ item.total_price }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <hr>
+        {% endfor %}
     </div>
     <div id="notification" style="display:none"></div>
 </main>

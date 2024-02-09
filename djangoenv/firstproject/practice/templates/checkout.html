@@ -21,10 +21,10 @@
     </nav>
         <main>
             <div id="bottom-cart">
-                <button id="cart-back">BACK</button>
-                <p>TOTAL: </p>
-                <button id="cart-placeorder">PLACE ORDER</button>
+                <a href="{% url 'cart' student_id=cart.student.id %}"><button id="cart-back">BACK</button></a>
+                <p>TOTAL: {{ total_price }}</p>
             </div>
+            <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
             {% for item_data in cart_data %}
             <tr>
                 <td>{{ item_data.name }}</td>
@@ -32,6 +32,7 @@
                 <td>{{ item_data.total_price }}</td>
                 <td>{{ item_data.id }}</td>
             </tr>
+        </div>
         {% endfor %}
         </main>
         

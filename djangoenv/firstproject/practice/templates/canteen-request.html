@@ -17,35 +17,37 @@
 <nav>
     <a href="{% url 'canteen-orderlist' %}" class="orderlist"><img src="{% static 'image/Order.png' %}">ORDERLIST</a>
     <a href="{% url 'canteen-request' %}" class="request"><img src="{% static 'image/Change Select.png' %}">REQUEST</a>
-    <a href="{% url 'canteen-qrcode' %}" class="qrcode"><img src="{% static 'image/Qr Code.png' %}"><br>QR-CODE SCAN</a>
+    
     <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
 </nav>
 <main>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
     <form action="" method="POST">
         {% csrf_token %}
         <div>
-            <label for="id_Student_Name">Student Name:</label>
+            <label>Title:</label>
             {{ form.Request_Title }}
         </div>
         <div>
-            <label for="id_Student_Name">Student Name:</label>
+            <label>Food Name:</label>
             {{ form.RequestFood_Name }}
         </div>
         <div>
-            <label>Student Gender:</label>
+            <label>Food Price:</label>
             {{ form.RequestFood_Price }}
         </div>
         <div>
-            <label>Student Race:</label>
+            <label>Ingredient List:</label>
             {{ form.RequestIngredient_List }}
         </div>
         <div>
-            <label>Student Grade:</label>
+            <label>Description:</label>
             {{ form.RequestFood_Description }}
         </div>
         <input type="reset" value="Cancel" id="cancel">
         <input type="submit" value="ADD" id="adder">
     </form>
+</div>
     <div id="notification" style="display:none"></div>
 </main>
 

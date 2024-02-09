@@ -12,11 +12,11 @@
 <body>
     <header>
         <h1>CART</h1>
-        <a href="{% url 'cart' student_id=student_id %}"><img src="{% static 'image/cart.png' %}" alt="logo"></a>
+        <a href="{% url 'cart' student_id=student_id %}"><img src="{% static 'image/cart Selected.png' %}" alt="logo"></a>
     </header>
     <nav>
         <a href="{% url 'user-profile' %}" class="home"><img src="{% static 'image/Home Page.png' %}">HOME</a>
-        <a href="{% url 'user-menu' student_id=student_id %}" class="menu"><img src="{% static 'image/Menu Selected.png' %}">MENU</a>
+        <a href="{% url 'user-menu' student_id=student_id %}" class="menu"><img src="{% static 'image/Menu.png' %}">MENU</a>
         <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
     </nav>
     <main>
@@ -43,11 +43,10 @@
                         </form>
                     </td>
                     <td>{{ item_data.total_price }}</td>
-                    <td>{{ item_data.id }}</td>
                     <td>
                         <form method="post" action="{% url 'remove_cart_item' cart_item_id=item_data.id %}">
                             {% csrf_token %}
-                            <button type="submit">Remove</button>
+                            <button type="submit" style="border: none; background-color: #D9D9D9; cursor:pointer;"><img style="width: 30px; height: 30px;" src="{% static 'image/bin.png' %}"></button>
                         </form>
                     </td>
                 </tr>

@@ -1,113 +1,112 @@
-
 <!DOCTYPE html>
-<html lang="en">
+{% load static %}
+<html>
 <head>
-	<meta id="meta" name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-    <title>Checkout</title>
-    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>cart</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
 </head>
 <body>
-
-    <h1>Checkout</h1>
-
-        <table border="1">
-            <thead>
-                <tr>   
-                    <th>Item Name</th>
-                    <th>Quantity</th>
-                    <th>Total Price</th>
-                    <th>id</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item_data in cart_data %}
-    <tr>
-        <td>{{ item_data.name }}</td>
-        <td>{{ item_data.quantity }}</td>
-        <td>{{ item_data.total_price }}</td>
-        <td>{{ item_data.id }}</td>
-    </tr>
-{% endfor %}
-
-            </tbody>
-        </table>
-
-        <p>Total Price: {{ total_price }}</p>
-        <a href="{% url 'place_order' cart_id=cart.id %}">Place order</a>
-	
-        <div id="paypal-button-container"></div>
+    <header>
+        <h1>CART</h1>
+        <a href="{% url 'cart' student_id=cart.student.id %}"><img src="{% static 'image/Cart Selected.png' %}" alt="logo"></a>
+    </header>
+    <nav>
+        <a href="{% url 'user-profile' %}" class="home"><img src="{% static 'image/Home Page.png' %}">HOME</a>
+        <a href="{% url 'user-menu' student_id=cart.student.id %}" class="menu"><img src="{% static 'image/Menu.png' %}">MENU</a>
+        <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
+    </nav>
+        <main>
+            <div id="bottom-cart">
+                <button id="cart-back">BACK</button>
+                <p>TOTAL: </p>
+                <button id="cart-placeorder">PLACE ORDER</button>
+            </div>
+            {% for item_data in cart_data %}
+            <tr>
+                <td>{{ item_data.name }}</td>
+                <td>{{ item_data.quantity }}</td>
+                <td>{{ item_data.total_price }}</td>
+                <td>{{ item_data.id }}</td>
+            </tr>
+        {% endfor %}
+        </main>
         
+        <div id="paypal-button-container"></div>
         <script src="https://www.paypal.com/sdk/js?client-id=ATNI-7Vrb0LcOVA5Kiij2FUrDghuevkKaQ62L32GyQ7dLVvd8cb7VN9chKsQpQfqWZXV4hUpa8aAwW3B&currency=MYR"></script>
 
-    <script>
-        function placeOrder(){
-            var url = "{% url 'place_order' cart_id=cart.id %}"
-
-	// Redirect to the menu
-        window.location.href = "{% url 'user-menu' student_id=cart.student.id %}";
-        }
-            // Render the PayPal button into #paypal-button-container
-            paypal.Buttons({
-            // Set up the transaction
-            createOrder: function(data, actions) {
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: '{{ total_price }}'
-                        }
-                    }]
-                });
-            },
-            // Finalize the transaction
-            onApprove: function(data, actions) {
-                return actions.order.capture().then(function(details) 
-                    {
-
-                // Show a success message to the buyer
-                alert('Transaction completed by ' + details.payer.name.given_name + '!');
-                // Call the create_order function via AJAX
-                fetch('/place_order/{{ cart.id }}/', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': getCookie('csrftoken'),  // Ensure you have a function to retrieve the CSRF token
-                        'Content-Type': 'application/json',
-                    },
-                    credentials: 'same-origin',
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Check if the order was successfully created
-                        if (data.success) {
-                            // Redirect to the "menu" page
-                            window.location.href = '/menu/' + data.student_id;
-                        } else {
-                            console.error('Error placing order:', data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error placing order:', error);
-                    });
-                });
+        <script>
+            function placeOrder(){
+                var url = "{% url 'place_order' cart_id=cart.id %}"
+    
+                // Redirect to the menu
+                window.location.href = "{% url 'user-menu' student_id=cart.student.id %}";
             }
-        }).render('#paypal-button-container');
-
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
+                // Render the PayPal button into #paypal-button-container
+                paypal.Buttons({
+                // Set up the transaction
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: '{{ total_price }}'
+                            }
+                        }]
+                    });
+                },
+                // Finalize the transaction
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) 
+                        {
+    
+                    // Show a success message to the buyer
+                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                    // Call the create_order function via AJAX
+                    fetch('/place_order/{{ cart.id }}/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),  // Ensure you have a function to retrieve the CSRF token
+                            'Content-Type': 'application/json',
+                        },
+                        credentials: 'same-origin',
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Check if the order was successfully created
+                            if (data.success) {
+                                // Redirect to the "menu" page
+                                window.location.href = '/menu/' + data.student_id;
+                            } else {
+                                console.error('Error placing order:', data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error placing order:', error);
+                        });
+                    });
+                }
+            }).render('#paypal-button-container');
+    
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
                     }
                 }
+                return cookieValue;
             }
-            return cookieValue;
-        }
-        const csrftoken = getCookie('csrftoken');
-    </script>
-            
+            const csrftoken = getCookie('csrftoken');
+        </script>
+                
     </body>
 </html>

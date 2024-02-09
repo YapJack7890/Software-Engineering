@@ -25,6 +25,23 @@
             <p>Requests</p>
             <p>Accept/Deny</p>
         </div>
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+            {% for request in requests %}
+                <li>
+                    <a href="{% url 'request_details' request.id %}">{{ request.Request_Title }}</a><br>
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            <input type="hidden" name="request_id" value="{{ request.id }}">
+                            <!-- Button for 'accept' action -->
+                            <button type="submit" name="action" value="accept">Accept</button>
+    
+                            <!-- Button for 'deny' action -->
+                            <button type="submit" name="action" value="deny">Deny</button>
+                        </form>
+                    <hr>
+                </li>
+            {% endfor %}
+        </div>
         <div id="notification" style="display:none">
 
         </div>

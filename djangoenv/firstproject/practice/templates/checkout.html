@@ -34,7 +34,7 @@
 
         <p>Total Price: {{ total_price }}</p>
         <a href="{% url 'place_order' cart_id=cart.id %}">Place order</a>
-
+	
         <div id="paypal-button-container"></div>
         
         <script src="https://www.paypal.com/sdk/js?client-id=ATNI-7Vrb0LcOVA5Kiij2FUrDghuevkKaQ62L32GyQ7dLVvd8cb7VN9chKsQpQfqWZXV4hUpa8aAwW3B&currency=MYR"></script>
@@ -43,8 +43,8 @@
         function placeOrder(){
             var url = "{% url 'place_order' cart_id=cart.id %}"
 
-            // Redirect to the menu
-            window.location.href = "{% url 'menu' student_id=cart.student.id %}";
+	// Redirect to the menu
+        window.location.href = "{% url 'user-menu' student_id=cart.student.id %}";
         }
             // Render the PayPal button into #paypal-button-container
             paypal.Buttons({

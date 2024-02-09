@@ -132,7 +132,7 @@ def editStudent(request, pk):
              messages.error(request, 'An error has occurred')
         
     context = {'form': form, 'student': student}
-    return render(request, 'user-profile.html', context)
+    return render(request, 'student.html', context)
 
 @login_required(login_url='register')
 def menu(request, student_id):

@@ -184,22 +184,17 @@ def add_to_cart(request, pk, student_id):
     # Get the quantity from the form data
     quantity = int(request.POST.get('quantity', 1))
 
-    # Check if the 'add_to_cart' button was pressed
-    #if 'add_to_cart' in request.POST:
-    print("Adding to cart")
     # Check if the product is already in the cart, update quantity if yes, create a new item if not
     cart_item, item_created = CartItem.objects.get_or_create(cart=cart, cart_item=fooditem)
 
     # Update quantity based on the selected value
-    cart_item.cartitem_quantity = max(1, quantity)
-    cart_item.save()
-
     if not item_created:
-        # Update quantity based on the selected value
+        # If the item already exists in the cart, increase the quantity by the specified quantity
         cart_item.cartitem_quantity += quantity
-        # Ensure the quantity is not less than 1
-        cart_item.cartitem_quantity = max(1, cart_item.cartitem_quantity)
-        cart_item.save()
+    else:
+        # If the item is newly added to the cart, set the quantity to the specified quantity
+        cart_item.cartitem_quantity = max(1, quantity)
+    cart_item.save()
         # Redirect to 'menu' with the student_id parameter
     return redirect('user-menu', student_id = student_id)
 

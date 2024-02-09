@@ -22,7 +22,7 @@
             <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>            
         </nav>
         <main id="main">
-            <button id="add-menu">+ Menu</button>
+            <a href="{% url 'addfooditem' %}"><button id="add-menu">+ Menu</button></a>
             <div id="notification" style="display:none">
             </div>
             <div id="add-div" style="display:none">

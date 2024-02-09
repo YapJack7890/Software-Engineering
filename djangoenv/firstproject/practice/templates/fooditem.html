@@ -1,25 +1,42 @@
 {% block content %}
+{% load static %}
+<title>Food Item</title>
+<link rel="stylesheet" href="{% static 'css/fooditem.css' %}">
+<header>
+    <h1>CANTEEN FOOD RESERVATION</h1>
+    <a href="{% url 'cart' student_id=current_student.id %}"><img src="{% static 'image/cart.png' %}" alt="logo"></a>
+</header>
+<nav>
+    <a href="{% url 'user-profile' %}" class="home"><img src="{% static 'image/Home Page.png' %}">HOME</a>
+    <a href="{% url 'user-menu' student_id=current_student.id %}" class ="menu"><img src="{% static 'image/Menu.png' %}">MENU</a>
+    <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
+</nav>
+<main>
     <div class="food-item-details">
         <h1>{{ fooditem.id }} - {{ fooditem.Food_Name }}</h1>
         <div>
-            <h2>RM{{ fooditem.Food_Price }}</h2>
-            <p>Ingredients: {{ fooditem.Ingredient_List }}</p>
-            <p>Description: {{ fooditem.Food_Description }}</p>
+            <h2>{{ fooditem.Food_Name  }}</h2>
+            <h4>Ingredients:</h4>
+            <p>{{ fooditem.Ingredient_List }}</p>
+            <h4>Description:</h4>
+            <p>{{ fooditem.Food_Description }}</p>
         </div>
     </div>
-
-    <!-- Add some styling or layout improvements as needed -->
-
+    
+    
     <form method="POST" action="{% url 'add_to_cart' pk=fooditem.id student_id=current_student.id %}">
         {% csrf_token %}
-        <div class="quantity-controls">
-            <button type="button" onclick="decreaseQuantity()">-</button>
-            <input type="text" id="quantity" name="quantity" value="1" readonly>
-            <button type="button" onclick="increaseQuantity()">+</button>
+        <div class="other-info">
+            <div class="quantity-controls">
+                <button type="button" onclick="decreaseQuantity()">-</button>
+                <input type="text" id="quantity" name="quantity" value="1" readonly>
+                <button type="button" onclick="increaseQuantity()">+</button>
+            </div>
+            <h3>RM {{ fooditem.Food_Price }}</h3>
         </div>
         <button type="submit" class="add-to-cart-btn">Add to Cart</button>
     </form>
-
+</main>
     <script>
         function decreaseQuantity() {
             var quantityInput = document.getElementById('quantity');

@@ -10,14 +10,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'css/user-menu.css' %}">
 </head>
-<body style="display: flex;
-flex-direction: column;
-align-items: center;">
-<header style="order: 0;">
+<body>
+<header>
     <h1>CANTEEN FOOD RESERVATION</h1>
     <a href="{% url 'cart' student_id=current_student.id %}"><img src="{% static 'image/cart.png' %}" alt="logo"></a>
 </header>
-<nav style="order: 1;">
+<nav>
     <a href="{% url 'user-profile' %}" class="home"><img src="{% static 'image/Home Page.png' %}">HOME</a>
     <a href="{% url 'user-menu' student_id=current_student.id %}" class ="menu"><img src="{% static 'image/Menu Selected.png' %}">MENU</a>
     <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>

@@ -55,7 +55,6 @@
             </table>
         </div>
         <div id="bottom-cart">
-            <button id="cart-cancel">CANCEL ORDER</button>
             <p>TOTAL: {{ cart_total_price }}</p>
             <a href="{% url 'checkout' cart.id %}"><button id="cart-checkout">CHECKOUT</button></a>
         </div>

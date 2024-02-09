@@ -1,35 +1,50 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Menu</title>
+    <title>cart</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'css/user-menu.css' %}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
 </head>
 <body>
-<header>
-    <h1>CANTEEN FOOD RESERVATION</h1>
-    <a href="{% url 'cart' student_id=current_student.id %}"><img src="{% static 'image/cart.png' %}" alt="logo"></a>
-</header>
-<nav>
-    <a href="{% url 'user-profile' %}" class="home"><img src="{% static 'image/Home Page.png' %}">HOME</a>
-    <a href="{% url 'user-menu' student_id=current_student.id %}" class ="menu"><img src="{% static 'image/Menu Selected.png' %}">MENU</a>
-    <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
-</nav>
-<main>
-    <div id="userMenu"></div>
-    {% for fooditem in fooditems %}
-    <div style="display: flex; justify-content: center;">
-        <h5><a href="{% url 'fooditem' pk=fooditem.id student_id=current_student.id %}">{{ fooditem.Food_Name }}</a></h5>
-        
-    </div>
-    {% endfor %}
-</main>
-
-<script src="{% static 'js/user-menu.js' %}" async defer></script>
+    <header>
+        <h1>CART</h1>
+        <a href="{% url 'cart' student_id=student_id %}"><img src="{% static 'image/cart.png' %}" alt="logo"></a>
+    </header>
+    <nav>
+        <a href="{% url 'user-profile' %}" class="home"><img src="{% static 'image/Home Page.png' %}">HOME</a>
+        <a href="{% url 'user-menu' student_id=student_id %}" class="menu"><img src="{% static 'image/Menu Selected.png' %}">MENU</a>
+        <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
+    </nav>
+    <main>
+        <div id="top-cart">
+            <p>ITEMS</p>
+            <p>PRICE</p>
+            <p>QTY</p>
+            <p>SUBTOTAL</p>
+        </div>
+        <div id="cart-items">
+            {% for item in cart_data %}
+            <div class="cart-item"  style="display: flex; justify-content: center;">
+                <p>{{ item.name }}</p>
+                <p>{{ item.price }}</p>
+                <p>{{ item.quantity }}</p>
+                <p>{{ item.total_price }}</p> <!-- Assuming 'total_price' is the subtotal for the item -->
+            </div>
+            {% empty %}
+            <p>No items in the cart</p>
+            {% endfor %}
+        </div>
+        <div id="bottom-cart">
+            <button id="cart-cancel">CANCEL ORDER</button>
+            <p>TOTAL: {{ cart_total_price }}</p>
+            <a href="{% url 'checkout' cart.id %}"><button id="cart-checkout">CHECKOUT</button></a>
+        </div>
+    </main>
+    
+    <script src="{% static 'js/cart.js' %}" async defer></script>
 </body>
 </html>

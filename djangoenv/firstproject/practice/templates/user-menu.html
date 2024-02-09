@@ -10,12 +10,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'css/user-menu.css' %}">
 </head>
-<body>
-<header>
+<body style="display: flex;
+flex-direction: column;
+align-items: center;">
+<header style="order: 0;">
     <h1>CANTEEN FOOD RESERVATION</h1>
     <a href="{% url 'cart' student_id=current_student.id %}"><img src="{% static 'image/cart.png' %}" alt="logo"></a>
 </header>
-<nav>
+<nav style="order: 1;">
     <a href="{% url 'user-profile' %}" class="home"><img src="{% static 'image/Home Page.png' %}">HOME</a>
     <a href="{% url 'user-menu' student_id=current_student.id %}" class ="menu"><img src="{% static 'image/Menu Selected.png' %}">MENU</a>
     <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
@@ -23,9 +25,18 @@
 <main>
     <div id="userMenu"></div>
     {% for fooditem in fooditems %}
-    <div style="display: flex; justify-content: center;">
+    <div style="
+    text-align: center;
+    flex-direction: column;
+    background-color: #A3E8ED;
+    order: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%; /* Adjust as needed */
+    margin: auto;" id="menuDiv">
         <h5><a href="{% url 'fooditem' pk=fooditem.id student_id=current_student.id %}">{{ fooditem.Food_Name }}</a></h5>
-        
+        <p>RM {{ fooditem.Food_Price }}</p>
     </div>
     {% endfor %}
 </main>

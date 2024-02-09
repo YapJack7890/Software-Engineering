@@ -6,6 +6,7 @@ nav{
     position: fixed;
     float: left;
     background: #263E92;
+    order: 1;
 }
 
 header {
@@ -19,9 +20,14 @@ header {
     align-items: center;
     justify-content: space-between; 
     z-index: 3;
+    order: 0;
 }
 
-
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 h1 {
     color: #FFF;
@@ -89,5 +95,22 @@ nav {
     line-height: normal;
     text-transform: uppercase;
     font-weight: bold;
+}
+
+#menuDiv{
+    text-align: center;
+    flex-direction: column;
+    background-color: #A3E8ED;
+    order: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%; 
+    margin: auto;
+}
+
+.food-item {
+    flex: 1 0 20%; 
+    margin: 10px;
 }
 

@@ -417,6 +417,8 @@ def RequestPage(request):
         if form.is_valid():
             #user = form.save(commit=False)
             form.save()
+            # Redirect to a new page
+            return redirect('canteen-request')
         else:
              messages.error(request, 'An error has occurred')
 

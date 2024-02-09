@@ -25,18 +25,13 @@ align-items: center;">
 <main>
     <div id="userMenu"></div>
     {% for fooditem in fooditems %}
-    <div style="
-    text-align: center;
-    flex-direction: column;
-    background-color: #A3E8ED;
-    order: 2;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%; /* Adjust as needed */
-    margin: auto;" id="menuDiv">
-        <h5><a href="{% url 'fooditem' pk=fooditem.id student_id=current_student.id %}">{{ fooditem.Food_Name }}</a></h5>
+    <div id="menuDiv">
+        <div id="blueP">
+            <h5><a href="{% url 'fooditem' pk=fooditem.id student_id=current_student.id %}">{{ fooditem.Food_Name }}</a></h5>
+        </div>
+        <div id="bluePrice">
         <p>RM {{ fooditem.Food_Price }}</p>
+        </div>
     </div>
     {% endfor %}
 </main>

@@ -20,7 +20,15 @@ header {
     align-items: center;
     justify-content: space-between; 
     z-index: 3;
-    order: 0;
+    margin:0;
+    transform:none;
+}
+
+main{
+    position : static;
+    margin :0;
+    transform: none;
+    padding-top: 80px;
 }
 
 body{
@@ -97,20 +105,43 @@ nav {
     font-weight: bold;
 }
 
-#menuDiv{
-    text-align: center;
-    flex-direction: column;
-    background-color: #A3E8ED;
-    order: 2;
+#blueP{
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%; 
-    margin: auto;
+    text-align: center;
+    justify-content: center; 
+    align-items: center;   
+    background-color: #A3E8ED;
+    width: 80vh;
+    height: 70%;
+    font-family: Quicksand;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 500;
+    margin-top: 20px;
 }
 
-.food-item {
-    flex: 1 0 20%; 
-    margin: 10px;
+#bluePrice{
+    display: flex;
+    text-align: center;
+    justify-content: right; 
+    align-items: center;   
+    background-color: #A3E8ED;
+    width: 80vh;
+    font-family: Quicksand;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+a{
+    color: #000;
+    text-decoration: none;
+}
+
+p{
+    font-family: Quicksand;
+    font-size: 21px;
+    font-style: normal;
+    font-weight: bolder;
 }
 

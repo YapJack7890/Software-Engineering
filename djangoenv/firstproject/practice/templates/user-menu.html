@@ -23,7 +23,7 @@
 <main>
     <div id="userMenu"></div>
     {% for fooditem in fooditems %}
-    <div>
+    <div style="display: flex; justify-content: center;">
         <h5><a href="{% url 'fooditem' pk=fooditem.id student_id=current_student.id %}">{{ fooditem.Food_Name }}</a></h5>
         
     </div>

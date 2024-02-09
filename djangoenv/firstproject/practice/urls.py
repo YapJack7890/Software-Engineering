@@ -36,7 +36,7 @@ urlpatterns = [
     path('place_order/<int:cart_id>/', views.place_order, name='place_order'),
 
     #Admin Page
-#     path('addfooditem', views.FoodItemPage, name='addfooditem'),
+    path('addfooditem', views.FoodItemPage, name='addfooditem'),
     path('deletefooditem/<str:pk>/', views.deleteFoodItem, name='deletefooditem'),
     path('updatefooditem/<str:pk>/', views.updateFoodItem, name='updatefooditem'),
     path('admin-menu', views.adminmenu, name='admin-menu'),
@@ -48,8 +48,8 @@ urlpatterns = [
     path('worker_register', views.worker_register, name='worker_register'),
 
     #Canteen Worker Page
-     path('request', views.RequestPage, name='request'),
-#     path('workerorders', views.worker_view_orders, name='workerorders'),
+    path('canteen-request', views.RequestPage, name='canteen-request'),
+    path('canteen-orderlist', views.view_orders_canteen, name='canteen-orderlist'),
 
      #QR Code
     path('canteen-request', views.RequestPage, name='canteen-request'),

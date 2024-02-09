@@ -23,8 +23,6 @@ def is_canteen_worker(user):
 def is_superuser(user):
     return user.is_authenticated and user.is_superuser
 
-def is_canteen_worker_or_superuser(user):
-    return user.is_authenticated and (user.is_superuser or user.is_staff)
 
 #below functions are authentications
 def registerPage(request):
@@ -70,7 +68,7 @@ def loginPage(request):
 
     context = {'page': page}
     return render(request, 'login.html', context)
-    
+
 def logoutUser(request):
     logout(request)
     return redirect('register')
@@ -118,7 +116,24 @@ def home(request):
         cart = student.cart
         carts.append(cart)
     return render(request, 'user-profile.html', {'order_items_by_order': order_items_by_order, 'students': students, 'carts': carts, 'form':studentform})
+'''
+@login_required(login_url='register')
+def studentPage(request):
     
+    studentform = StudentForm()
+    
+    if request.method == 'POST':
+        studentform = StudentForm(request.POST)
+        if studentform.is_valid():
+            student_form = studentform.save(commit=False)
+            student_form.Parent = request.user
+            student_form.save()
+            #return redirect('home')
+        else:
+             messages.error(request, 'An error has occurred')
+
+    return render(request, 'home.html', {'form':studentform})'''
+
 @login_required(login_url='register')
 def editStudent(request, pk):
     student = Student.objects.get(id=pk)
@@ -144,9 +159,9 @@ def menu(request, student_id):
         # Handle the case when student_id is not provided
         current_student = None
 
-    # Fetch all FoodItem objects
-    fooditems = FoodItem.objects.all()  # Fetch all FoodItem objects
-    return render(request, 'user-menu.html', {'fooditems': fooditems, 'current_student': current_student})
+    #Filters FoodItem objects where Food_Availability is True
+    available_food_items = FoodItem.objects.filter(Food_Availability=True)
+    return render(request, 'user-menu.html', {'fooditems': available_food_items, 'current_student': current_student})
 
 @login_required(login_url='register')
 def foodItem(request, pk, student_id):
@@ -212,7 +227,7 @@ def display_cart(request, student_id):
         cart_item = None  # Initialize cart_item
         for cart_item in cart_items:
             item_data = {
-                'id': cart_item.cart_item.id,
+                'id': cart_item.id,
                 'name': cart_item.cart_item.Food_Name,
                 'price': cart_item.cart_item.Food_Price,
                 'quantity': cart_item.cartitem_quantity,
@@ -223,7 +238,7 @@ def display_cart(request, student_id):
             # Accumulate the total price
             total_price += cart_item.total_price()
 
-        return render(request, 'cart.html', {'student_id': student_id, 'cart_data': cart_data, 'cart': cart, 'cart_item': cart_item, 'total_price': total_price})
+        return render(request, 'cart.html', {'student_id': student_id, 'cart_data': cart_data, 'cart': cart, 'cart_item': cart_item, 'cart_total_price': total_price})
     
 @login_required(login_url='register')
 def increase_cart_item_quantity(request, cart_item_id):
@@ -233,8 +248,8 @@ def increase_cart_item_quantity(request, cart_item_id):
     cart_item.cartitem_quantity += 1
     cart_item.save()
 
-    return redirect('display_cart', student_id=cart_item.cart.student.id)
-    
+    return redirect('cart', student_id=cart_item.cart.student.id)
+
 @login_required(login_url='register')
 def decrease_cart_item_quantity(request, cart_item_id):
     cart_item = get_object_or_404(CartItem, pk=cart_item_id)
@@ -245,14 +260,16 @@ def decrease_cart_item_quantity(request, cart_item_id):
         cart_item.save()
     else: 
         # If the quantity is 1, remove the item from the cart
-        return redirect('display_cart', student_id=cart_item.cart.student.id)
+        cart_item.delete()
+
+    return redirect('cart', student_id=cart_item.cart.student.id)
 
 @login_required(login_url='register')
 def remove_cart_item(request, cart_item_id):
     cart_item = get_object_or_404(CartItem, id=cart_item_id)
     cart_item.delete()
 
-    return redirect('display_cart', student_id=cart_item.cart.student.id)
+    return redirect('cart', student_id=cart_item.cart.student.id)
 
 @login_required(login_url='register')
 def order_history(request):
@@ -260,8 +277,6 @@ def order_history(request):
     students = Student.objects.filter(Parent=current_user)
 
     order_items_by_order = {}
-    cart_item.delete()
-
 
     for student in students:
         order_items = OrderItem.objects.filter(order__cart__student=student).select_related('order__cart__student', 'order_item')
@@ -274,9 +289,35 @@ def order_history(request):
                 order_items_by_order[order] = []
             #Append the current OrderItem to the list associated with the Order
             order_items_by_order[order].append(order_item)
+    return render(request, 'user-profile.html', {'order_items_by_order': order_items_by_order})
 
-    return render(request, 'orderhistory.html', {'order_items_by_order': order_items_by_order})
-    
+@login_required(login_url='register')
+def cancel_order(request, cart_id):
+        # Retrieve the Cart instance using the cart_id
+        cart = get_object_or_404(Cart, id=cart_id)
+
+        # Retrieve all CartItem instances associated with the Cart
+        cart_items = CartItem.objects.filter(cart=cart)
+        
+        # Prepare data for rendering
+        cart_data = []
+        total_price = 0  # Initialize total price
+        cart_item = None  # Initialize cart_item
+        for cart_item in cart_items:
+            item_data = {
+                'id': cart_item.cart_item.id,
+                'name': cart_item.cart_item.Food_Name,
+                'quantity': cart_item.cartitem_quantity,
+                'total_price': cart_item.total_price(),
+            }
+            cart_data.append(item_data)
+
+            # Accumulate the total price
+            total_price += cart_item.total_price()
+
+        # Return a simple HTML response (this can be improved with templates)
+        return render(request, 'checkout.html', {'cart_data': cart_data, 'cart': cart, 'cart_item': cart_item, 'total_price': total_price})
+
 @login_required(login_url='register')
 def checkout(request, cart_id):
         # Retrieve the Cart instance using the cart_id
@@ -300,6 +341,11 @@ def checkout(request, cart_id):
 
             # Accumulate the total price
             total_price += cart_item.total_price()
+
+        # Return a simple HTML response (this can be improved with templates)
+        return render(request, 'checkout.html', {'cart_data': cart_data, 'cart': cart, 'cart_item': cart_item, 'total_price': total_price})
+
+@login_required(login_url='register')
 def place_order(request, cart_id):
     # Get the product based on the product_id
     cart = get_object_or_404(Cart, id=cart_id)
@@ -330,7 +376,7 @@ def place_order(request, cart_id):
     student_id = cart.student.id
     #return redirect('menu', student_id = student_id)
     return JsonResponse({'success': True, 'message': 'Order placed successfully', 'student_id': student_id})
-    
+
 #Below functions are for CanteenWorker page
 @user_passes_test(is_canteen_worker, login_url='login')
 def view_orders_canteen(request):
@@ -371,14 +417,30 @@ def RequestPage(request):
         if form.is_valid():
             #user = form.save(commit=False)
             form.save()
-            #login(request, form)
-            return redirect('home')
         else:
              messages.error(request, 'An error has occurred')
 
 
     return render(request, 'canteen-request.html', {'form':form})
     
+#Below functions are for admin page
+@user_passes_test(is_superuser, login_url='login')
+def FoodItemPage(request):
+    form = FoodItemForm()
+    
+    if request.method == 'POST':
+        form = FoodItemForm(request.POST)
+        if form.is_valid():
+            #user = form.save(commit=False)
+            form.save()
+            #login(request, form)
+            return redirect('admin-menu')
+        else:
+             messages.error(request, 'An error has occurred')
+
+
+    return render(request, 'addfooditem.html', {'form':form})
+
 @user_passes_test(is_superuser, login_url='login')
 def updateFoodItem(request, pk):
     fooditem = FoodItem.objects.get(id=pk)
@@ -429,7 +491,7 @@ def toggle_availability(request, fooditem_id):
     # Redirect back to the menu page
     return redirect('admin-menu')
 
-@user_passes_test(is_canteen_worker_or_superuser, login_url='login')
+@user_passes_test(is_superuser, login_url='login')
 def view_orders(request):
 
     orders = Order.objects.all()  # Fetch all Order objects
@@ -458,7 +520,8 @@ def view_orders(request):
     # Pass data to the template
     context = {'orders_data': orders_data}
     return render(request, 'admin-orderlist.html', context)
-    
+
+
 @user_passes_test(is_superuser, login_url='login')
 def request_list(request):
     print(f"Method: {request.method}")
@@ -475,9 +538,10 @@ def request_list(request):
                 if action == 'accept':
                     print("Accepting request...")
                     # Assuming FoodItem has fields like 'name' and 'description'
-                    Food_Price=request_obj.RequestFood_Price,
-                    Ingredient_List=request_obj.RequestIngredient_List, 
-                    Food_Description=request_obj.RequestFood_Description,
+                    FoodItem.objects.create(Food_Name=request_obj.RequestFood_Name, 
+                                            Food_Price=request_obj.RequestFood_Price,
+                                            Ingredient_List=request_obj.RequestIngredient_List, 
+                                            Food_Description=request_obj.RequestFood_Description)
                     request_obj.delete()  # Delete the request after processing
 
                 elif action == 'deny':
@@ -486,14 +550,13 @@ def request_list(request):
             except Request.DoesNotExist:
                 pass
     requests = Request.objects.all()
-    FoodItem.objects.create(Food_Name=request_obj.RequestFood_Name) 
-    return render(request, 'request_list.html', {'requests': requests})
+    return render(request, 'admin-request.html', {'requests': requests})
 
 @user_passes_test(is_superuser, login_url='login')
 def request_details(request, pk):
     request_details = Request.objects.get(id=pk)
     context = {'request_details': request_details}
-    return render(request, 'admin-request.html', {'requests': requests})
+    return render(request, 'request_details.html', context)
 
 @user_passes_test(is_superuser, login_url='login')
 def worker_register(request):

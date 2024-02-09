@@ -19,7 +19,7 @@ class FoodItem(models.Model):
     #Food_Image = models.ImageField('Food Image', upload_to='food_pictures/')
     Ingredient_List = models.TextField('Ingredient List', max_length=100)
     Food_Description = models.TextField('Food Description', max_length=200)
-    #Food_Category = models.CharField('Food Category', max_length=10)
+    Food_Availability = models.BooleanField('Food Availability', default=True)
 
 class Request(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')

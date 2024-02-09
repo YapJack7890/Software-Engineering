@@ -27,16 +27,32 @@
             <p>SUBTOTAL</p>
         </div>
         <div id="cart-items">
-            {% for item in cart_data %}
-            <div class="cart-item"  style="display: flex; justify-content: center;">
-                <p>{{ item.name }}</p>
-                <p>{{ item.price }}</p>
-                <p>{{ item.quantity }}</p>
-                <p>{{ item.total_price }}</p> <!-- Assuming 'total_price' is the subtotal for the item -->
-            </div>
-            {% empty %}
-            <p>No items in the cart</p>
-            {% endfor %}
+            <table style="display: flex; justify-content: center;">
+                {% for item_data in cart_data %}
+                <tr>
+                    <td>{{ item_data.name }}</td>
+                    <td>
+                        <form method="post" action="{% url 'increase_cart_item_quantity' cart_item_id=item_data.id %}">
+                            {% csrf_token %}
+                            <button type="submit">+</button>
+                        </form>
+                        <span>{{ item_data.quantity }}</span>
+                        <form method="post" action="{% url 'decrease_cart_item_quantity' cart_item_id=item_data.id %}">
+                            {% csrf_token %}
+                            <button type="submit">-</button>
+                        </form>
+                    </td>
+                    <td>{{ item_data.total_price }}</td>
+                    <td>{{ item_data.id }}</td>
+                    <td>
+                        <form method="post" action="{% url 'remove_cart_item' cart_item_id=item_data.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
         <div id="bottom-cart">
             <button id="cart-cancel">CANCEL ORDER</button>

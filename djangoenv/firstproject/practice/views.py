@@ -41,7 +41,7 @@ def registerPage(request):
     return render(request, 'register.html', {'form':form})
 
 def loginPage(request):
-
+    page = 'login'
     if request.method == 'POST':
         username = request.POST.get('lusername')
         password = request.POST.get('lpassword')

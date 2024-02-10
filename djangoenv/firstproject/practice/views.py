@@ -41,7 +41,6 @@ def registerPage(request):
     return render(request, 'register.html', {'form':form})
 
 def loginPage(request):
-    page = 'login'
 
     if request.method == 'POST':
         username = request.POST.get('lusername')
@@ -58,7 +57,7 @@ def loginPage(request):
             elif user.is_staff:
                 # User is a valid CanteenWorker
                 login(request, user)
-                return redirect("canteen-request")
+                return redirect("canteen-orderlist")
             else:
                 # User is a regular user
                 login(request, user)

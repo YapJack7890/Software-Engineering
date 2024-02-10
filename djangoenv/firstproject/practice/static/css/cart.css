@@ -93,16 +93,6 @@ body{
     font-weight: bold;
 }
 
-#top-cart{
-    display: flex;
-    position: relative;
-    margin-top: 70px;
-    left: 92px;
-    justify-content: space-between;
-    background-color: #C55C5C;
-    width: 95%;
-    height: 50px;
-}
 
 #bottom-cart{
     display: flex;
@@ -157,4 +147,87 @@ body{
     width: 240px;
     line-height: normal;
     text-transform: uppercase;
+}
+
+table{
+    border-collapse: collapse;
+    margin-left: 90px;
+    margin-top: 68px;
+    width: 95.1%;
+}
+
+td{
+    font-family: Quicksand;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+th{
+    font-family: Quicksand;
+    background-color: #C55C5C;
+    height: 50px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.th1{
+    width: 100vw;
+    text-align: center;
+}
+
+.th2{
+    width: 20vw;
+    text-align: left;
+}
+
+.th3{
+    width: 20vw;
+    text-align: left;
+}
+
+.th4{
+    width: 20vw;
+    text-align: right;
+}
+
+.itemName{
+    text-align: center;
+}
+
+.itemTotalPrice{
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.itemQuantity{
+    gap: 10px;
+    flex-direction: row;
+    align-items: center;
+}
+
+.itemQuantity form, .itemTotalPrice form {
+    display: inline-block;
+}
+
+.itemQuantity button{
+    background-color: rgba(253, 0, 0, 0.37);;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.itemQuantity button:hover{
+    background-color: rgba(253, 0, 0, 0.70);
+}
+
+.itemQuantity span{
+    padding: 0px 5px 0px 5px;
+    border: none;
+    text-align: center;
+    font-weight: bolder;
 }

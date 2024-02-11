@@ -34,10 +34,10 @@
                     {% csrf_token %}
                     <input type="hidden" name="request_id" value="{{ request.id }}">
                     <!-- Button for 'accept' action -->
-                    <button type="submit" name="action" value="accept">Accept</button>
+                    <button class="submitButton" type="submit" name="action" value="accept">Accept</button>
 
                     <!-- Button for 'deny' action -->
-                    <button type="submit" name="action" value="deny">Deny</button>
+                    <button class="denyButton" type="submit" name="action" value="deny">Deny</button>
                 </form>
             </td>
             </tr>

@@ -188,6 +188,39 @@ td{
     text-align: left;
 }
 
+.submitButton{
+    cursor: pointer;
+    background-color: #18CDA3;
+    font-family: Quicksand;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.submitButton:hover{
+    background-color: #0B7A75;
+}
+
+.denyButton{
+    cursor: pointer;
+    background-color: #FF0000;
+    font-family: Quicksand;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    font-weight: bold;
+
+}
+
+.denyButton:hover{
+    background-color: #B30000;
+}
+
 #notification{
     position: fixed;
     top: 60px;

@@ -120,6 +120,28 @@ nav {
     margin-left: 10px;
 }
 
+.canteen{
+    text-decoration: none;
+    margin-top: 25px;
+    margin-left: 5px;
+    color: #FFF;
+    font-family: Quicksand;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.canteen img{
+    float: center;
+    margin-left: 15px;
+    width: 50px; 
+    height: 50px;
+    color: #FFF;
+}
+
 #request-top{
     background: rgba(163, 232, 237, 0.50);
     display: flex;

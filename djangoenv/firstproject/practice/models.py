@@ -51,7 +51,7 @@ class CartItem(models.Model):
 class Order(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, null=True)
-    Order_Status = models.CharField('Order Status', max_length=10)
+    Order_Status = models.CharField('Order Status', max_length=10, default='Pending')
     order_total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 class OrderItem(models.Model):

@@ -348,7 +348,6 @@ def place_order(request, cart_id):
 
     #get the student id from cart
     student_id = cart.student.id
-    #return redirect('menu', student_id = student_id)
     return JsonResponse({'success': True, 'message': 'Order placed successfully', 'student_id': student_id})
 
 #Below functions are for CanteenWorker page

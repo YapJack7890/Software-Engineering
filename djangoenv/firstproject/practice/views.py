@@ -115,23 +115,6 @@ def home(request):
         cart = student.cart
         carts.append(cart)
     return render(request, 'user-profile.html', {'order_items_by_order': order_items_by_order, 'students': students, 'carts': carts, 'form':studentform})
-'''
-@login_required(login_url='register')
-def studentPage(request):
-    
-    studentform = StudentForm()
-    
-    if request.method == 'POST':
-        studentform = StudentForm(request.POST)
-        if studentform.is_valid():
-            student_form = studentform.save(commit=False)
-            student_form.Parent = request.user
-            student_form.save()
-            #return redirect('home')
-        else:
-             messages.error(request, 'An error has occurred')
-
-    return render(request, 'home.html', {'form':studentform})'''
 
 @login_required(login_url='register')
 def editStudent(request, pk):

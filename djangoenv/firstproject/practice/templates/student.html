@@ -5,7 +5,6 @@
 <link rel="stylesheet" href="{% static 'css/student.css' %}">
 <header>
     <h1>CANTEEN FOOD RESERVATION</h1>
-    
 </header>
 
 <main>
@@ -25,8 +24,9 @@
     {% endfor %}
     {% endif %}
     </ul>
-
+    <div style="text-align: center;">
     <a href="{% url 'user-profile' %}">Back</a>
+    </div>
 </body>
 </main>
 {% endblock content %}

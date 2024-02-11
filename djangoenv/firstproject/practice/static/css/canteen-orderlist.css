@@ -121,22 +121,49 @@ nav {
     margin-left: 10px;
 }
 
-#order-top{
-    background: rgba(163, 232, 237, 0.50);
-    display: flex;
-    justify-content: space-between;
+main{
     margin-top: 70px;
-    margin-left: 92px;
-    width: 95%;
-    color: #000;
+}
 
+#order-top{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    top: 0%;
+    left: 90px;
+    width: 95.1%;
+    height: 5vh;
+    border: 1px solid #000;
+    justify-content: top;
+    font-size: 18px;
+    z-index: 1;
+    justify-content: space-between; 
+    background-color: rgba(175, 229, 233, 0.30);
+}
+
+.th1{
+    width: 30vw;
     text-align: center;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: #000;
-    font-family: Inter;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: bolder;
+}
+
+.th2{
+    width: 40vw;
+    text-align: center;
+}
+
+.th3{
+    width: 30vw;
+    text-align: center;
+}
+
+td{
+    border-bottom: 1px solid #000;
+}
+
+.orderID, .orderStatus{
+    justify-self: unset;
+    align-items: center;
+    text-align: center;
 }
 
 #notification{

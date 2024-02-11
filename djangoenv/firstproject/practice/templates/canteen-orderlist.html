@@ -17,6 +17,8 @@
 <nav>
     <a href="{% url 'canteen-orderlist' %}" class="orderlist"><img src="{% static 'image/Order Select.png' %}">ORDERLIST</a>
     <a href="{% url 'canteen-request' %}" class="request"><img src="{% static 'image/Change.png' %}">REQUEST</a>
+    <a href="canteen-qrcode.html" class="qrcode"><img src="{% static 'image/Qr Code.png' %}"><br>QR-CODE SCAN</a>
+
     
     <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
 </nav>

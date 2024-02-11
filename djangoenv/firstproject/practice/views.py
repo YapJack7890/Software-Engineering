@@ -342,6 +342,7 @@ def view_orders_canteen(request):
         order_data = {
             'order_id': order.id,
             'total_price': order.order_total_price,
+            'status': order.Order_Status,
             'order_items': [],
         }
 

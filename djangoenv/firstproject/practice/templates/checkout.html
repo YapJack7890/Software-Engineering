@@ -11,7 +11,7 @@
 </head>
 <body>
     <header>
-        <h1>CART</h1>
+        <h1>CHECKOUT</h1>
         <a href="{% url 'cart' student_id=cart.student.id %}"><img src="{% static 'image/Cart Selected.png' %}" alt="logo"></a>
     </header>
     <nav>
@@ -24,7 +24,8 @@
                 <a href="{% url 'cart' student_id=cart.student.id %}"><button id="cart-back">BACK</button></a>
                 <p>TOTAL: {{ total_price }}</p>
             </div>
-            <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+            <div class="main-cart">
+            <table>
             {% for item_data in cart_data %}
             <tr>
                 <td>{{ item_data.name }}</td>
@@ -32,11 +33,12 @@
                 <td>{{ item_data.total_price }}</td>
                 <td>{{ item_data.id }}</td>
             </tr>
+            {% endfor %}
+        </table>
         </div>
-        {% endfor %}
+        <div id="paypal-button-container" ></div>
         </main>
         
-        <div id="paypal-button-container"></div>
         <script src="https://www.paypal.com/sdk/js?client-id=ATNI-7Vrb0LcOVA5Kiij2FUrDghuevkKaQ62L32GyQ7dLVvd8cb7VN9chKsQpQfqWZXV4hUpa8aAwW3B&currency=MYR"></script>
 
         <script>

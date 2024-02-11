@@ -18,7 +18,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between; 
-    z-index: 3;
+    z-index: 2;
 }
 
 
@@ -100,7 +100,7 @@ body{
     left: 99px;
     justify-content: space-between;
     background-color: #3E3838;
-    width: 94.5%;
+    width: 94.2%;
     height: 70px;
 }
 
@@ -113,8 +113,7 @@ body{
     line-height: normal;
     text-transform: uppercase;
     font-weight: bold;
-    margin-left: 690px;
-    margin-top: 15px;
+
 }
 
 #bottom-cart button{
@@ -146,4 +145,30 @@ body{
     width: 240px;
     line-height: normal;
     text-transform: uppercase;
+}
+
+table{
+    border-collapse: separate;
+    border-spacing: 0 20px;
+    margin-left: 90px;
+    margin-top: 68px;
+    width: 95.1%;
+}
+
+td{
+    font-family: Quicksand;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    border-bottom: 1px solid #000;
+}
+
+
+#paypal-button-container{
+    position: relative;
+    margin-left: 30%;
+    margin-top: 27%;
+    z-index: 3;
 }

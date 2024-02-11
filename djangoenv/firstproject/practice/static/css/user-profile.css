@@ -231,56 +231,6 @@ h2{
     
 }
 
-/* .form-data {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    top: 0%;
-    left: 26%;
-    
-    width: 100vh;
-    height: 30vh;
-    border: 1px solid #000;
-    justify-content: top;
-    font-size: 18px;
-    z-index: 1;
-}
-
-.form-data h3{
-    font-family: Quicksand;
-    position: relative;
-    top: -20px;
-    left: 0;
-    font-size: 20px;
-    text-transform: uppercase;
-    margin-bottom: 3px;
-    background-color: #A3E8ED;
-    width: 100%;
-}
-
-.form-data p{
-    font-family: Quicksand;
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-.form-data button{
-    position: relative;
-    margin-top: auto;
-    margin-left: auto;
-    width: 100px;
-    background: #f03c3c;
-    color: #FFF;
-
-    text-align: center;
-    font-family: Montserrat;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 400;
-    cursor: pointer;
-} */
-
 #history-head{
     display: flex;
     flex-direction: row;
@@ -295,10 +245,35 @@ h2{
     z-index: 1;
     justify-content: space-between; 
     background-color: rgba(175, 229, 233, 0.30);
-
 }
 
-table{
+.th1{
+    width: 30vw;
+    text-align: center;
+}
+
+.th2{
+    width: 30vw;
+    text-align: center;
+}
+
+.th3{
+    width: 30vw;
+    text-align: center;
+}
+
+.th4{
+    width: 30vw;
+    text-align: center;
+}
+
+.orderID, .orderStatus, .orderButton{
+    justify-self: unset;
+    align-items: center;
+    text-align: center;
+}
+
+.student-profile{
     border: 1px solid black;
     border-collapse: collapse;
     margin-left: auto;
@@ -311,7 +286,7 @@ table{
     font-size: 23px;
 }
 
-th{
+.studentName{
     background-color: #A3E8ED;
 }
 
@@ -351,4 +326,15 @@ td{
 
 #menuButton:hover{
     background-color: #259e82;
+}
+
+p{
+    font-family: Quicksand;
+    font-size: 23px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
 }

@@ -52,9 +52,9 @@
     {% for cart in carts %}
         {% if student.id == cart.student.id %}
         <div style="display: flex; justify-content: center;">
-            <table>
+            <table class="student-profile">
                 <tr>
-                    <th>{{ student.Student_Name }}</th>
+                    <th class="studentName">{{ student.Student_Name }}</th>
                 </tr>
                 <tr>
                     <td>{{ student.Student_Gender }}</td>
@@ -83,38 +83,43 @@
         <button id="add">add student</button>
     </div>
     <div id="history-section" style="display: none;">
-        <div id="history-head">
-            <p>Order ID</p>
-            <p>Food Items</p>
-            <p>Statues</p>
-            <p>QR Code</p>
+        <table id="history-head">
+
+            <th class="th1">Order ID</th>
+            <th class="th2">Food Items</th>
+            <th class="th3">Statues</th>
+            <th class="th4">QR Code</th>
             
-        </div>
+
         {% if order_items_by_order %}
             {% for order, order_items in order_items_by_order.items %}
-                <div class="order">
-                    <h2>Order ID: {{ order.id }}</h2>
-                    <p>Order Status: {{ order.Order_Status }}</p>
-                    <p>Total Price: ${{ order.order_total_price }}</p>
-    
+            <tr>
+                
+                    <td class="orderID">Order ID: {{ order.id }}</td>
                     {% if order_items %}
+                    <td class="orderList">
                         <ul>
                             {% for order_item in order_items %}
-                                <li>
-                                    Food Name: {{ order_item.order_item.Food_Name }}<br>
-                                    Quantity: {{ order_item.orderitem_quantity }}<br>
-                                    Item Total Price: ${{ order_item.order_item_total_price }}
-                                </li>
+                            <li>
+                                Food Name: {{ order_item.order_item.Food_Name }}<br>
+                                Quantity: {{ order_item.orderitem_quantity }}<br>
+                                Item Total Price: RM {{ order_item.order_item_total_price }}
+                            </li>
                             {% endfor %}
                         </ul>
+                    </td>
+                    <td class="orderStatus">Order Status: {{ order.Order_Status }}</td>  
+                    <td class="orderButton"><button>View</button></td>
                     {% else %}
                         <p>No order items found for this order.</p>
                     {% endif %}
-                </div>
+                
+                <tr>
             {% endfor %}
         {% else %}
             <p>No orders found for these students.</p>
         {% endif %}
+        </table>
     </div>
 </main>
 

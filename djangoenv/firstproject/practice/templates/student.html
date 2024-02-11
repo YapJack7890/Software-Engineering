@@ -1,7 +1,15 @@
 
 {% block content %}
+{% load static %}
+<title>Edit Student</title>
+<link rel="stylesheet" href="{% static 'css/student.css' %}">
+<header>
+    <h1>CANTEEN FOOD RESERVATION</h1>
+    
+</header>
 
-
+<main>
+<body>
 <form method="POST" action="">
     {% csrf_token %}
     {{form.as_p}}
@@ -10,7 +18,6 @@
 </form>
 
 
-<body>
     {% if messages %}
     <ul class="messages">
     {% for message in messages %}
@@ -19,7 +26,7 @@
     {% endif %}
     </ul>
 
+    <a href="{% url 'user-profile' %}">Back</a>
 </body>
-<a href="{% url 'user-profile' %}">Back</a>
-
+</main>
 {% endblock content %}

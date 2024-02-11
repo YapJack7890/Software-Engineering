@@ -1,0 +1,100 @@
+header{
+    background-color: #263E92;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    position: fixed;
+    stroke-width: 1px;
+    stroke: #000;
+    
+}
+
+main{
+    position : static;
+    margin :0;
+    transform: none;
+    padding-top: 80px;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    flex-shrink: 0;
+    color: #FFF;
+    text-align: center;
+    position: relative;
+    font-family: Quicksand;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+form{
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap : 5px;
+
+}
+
+form input[type="submit"]{
+    background-color: #18CDA3;
+    cursor: pointer;
+    font-family: Quicksand;
+    font-size: 23px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    font-weight: bold;
+    width: 40%;
+}
+
+form input[type="submit"]:hover{
+    background-color: #259e82;
+}
+
+a{
+    text-decoration: none;
+    color: #000;
+    font-family: Quicksand;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+form input{
+    margin-bottom: 20px;
+}
+
+form input[type="text"]{
+    width: 400px;
+    height: 40px;
+}
+
+form input[type="radio"]{
+    width: 400px;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+form label{
+    font-family: Quicksand;
+    font-size: 18px;
+    font-style: normal;
+    line-height: normal;
+    text-transform: uppercase;
+
+}

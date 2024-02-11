@@ -345,7 +345,8 @@ def view_orders_canteen(request):
             'status': order.Order_Status,
             'order_items': [],
         }
-
+        print("Order status: ")
+        print(order.Order_Status)
         for order_item in order_items:
             item_data = {
                 'food_item_name': order_item.order_item.Food_Name,

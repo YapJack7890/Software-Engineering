@@ -25,18 +25,6 @@
             <a href="{% url 'addfooditem' %}"><button id="add-menu">+ Menu</button></a>
             <div id="notification" style="display:none">
             </div>
-            <div id="add-div" style="display:none">
-                <form action="" id="menu-form" name="menu-form">
-                    <label for="image-file" id="image-label" >Upload Image</label>
-                    <input type="file" multiple accept="image/*" id="image-file" name="image-file" required>
-                    <input type="text" placeholder="Food Name" id="food-name" name="food-name" required><br>
-                    <input type="text" placeholder="Ingredient list" id="ingredient-list" name="ingredient-list" required><br>
-                    <textarea name="request-description" id="request-description" cols="30" rows="10" placeholder="Request Description" required></textarea><br>
-                    <input type="text" placeholder="Price" id="price" name="price" required><br>
-                    <input type="submit" value="Submit" id="submit"><br>
-                    <input type="reset" value="Discard" id="discard">
-                </form>
-            </div>
             <div id="menu">
                 {% for fooditem in fooditems %}
                 <form action="{% url 'toggle-availability' fooditem.id %}" method="POST">
@@ -55,34 +43,10 @@
                 </form>
                 {% endfor %}
             </div>
-            </div>
-            <div id="item-info" style="display:none">
-                <form action="" id="edit-menu"> 
-                    <div id="info-container">
-                        <img src="image/GyatDamn.jpg" id="form-imageclick"><br>             
-                        <input type="text" id="form-food-name" value="GyatDamn" name="edit" readonly><br>
-                        <input type="text" id="form-ingredient-list" value="Rice, Chicken, Egg" name="edit" readonly><br>
-                        <textarea id="form-request-description" cols="30" rows="10" name="edit" readonly>Spicy</textarea><br>
-                    </div>  
-                    <div id="other-info">
-                        <div id="quatity-container">
-                            <button type="button" onclick="decrease()">-</button>
-                            <input type="text" id="number" value="1" readonly>
-                            <button type="button" onclick="increase()">+</button><br>
-                        </div>
-                        <input type="text" id="form-price" value="RM 5.00" name="edit" readonly><br>
-                    </div>
-
-                </form>
-                <div id="button-div">
-                    <button id="edit-button" onclick="makeEditable()">EDIT</button>
-                    <button id="delete-button">DELETE</button>
-                    <button id="save-button" style="display: none;" onclick="saveChanges()">SAVE</button>
-                    <button id="discard-button" style="display: none;" onclick="buttonChange()">DISCARD</button>
-                </div>
-            </div>
         </main>
-        
-        <script src="{% static 'js/admin-menu.js' %}%" async defer></script>
+        <script>
+            var newSrc ="{% static 'image/Bell Select.png'%}";
+        </script>
+        <script src="{% static 'js/admin-menu.js' %}" async defer></script>
     </body>
 </html>

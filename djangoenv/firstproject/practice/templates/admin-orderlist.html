@@ -21,42 +21,41 @@
         <a href="logout" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
     </nav>
     <main>
-        <div id="order-top">
-            <p>Order ID</p>
-            <p>Food Items</p>
-            <p>Status</p>
-        </div>
         <div>
-            {% if orders_data %}
-            <ul>
-                {% for order_data in orders_data %}
-            <div>
-                <p><strong>Order ID:</strong> {{ order_data.order_id }}</p>
-                <p><strong>Total Price:</strong> {{ order_data.total_price }}</p>
-    
-                <h2>Order Items</h2>
+        <table id="order-top">
+            <th class="th1">Order ID</th>
+            <th class="th2">Food Items</th>
+            <th class="th3">Status</th>
+        <tr>
+            {% if orders_data %}    
+            {% for order_data in orders_data %}
+            <td class="orderID"><strong>{{ order_data.order_id }}</strong></td>
+            <td class="orderList">
                 <ul>
                     {% for item in order_data.order_items %}
                         <li>
-                            <p><strong>Food Item:</strong> {{ item.food_item_name }}</p>
-                            <p><strong>Quantity:</strong> {{ item.quantity }}</p>
-                            <p><strong>Total Price:</strong> {{ item.total_price }}</p>
+                            <strong>Food Item: {{ item.food_item_name }}</strong>
+                            <strong>Quantity: {{ item.quantity }}</strong>
+                            <strong>Total Price: {{ item.total_price }}</strong>
                         </li>
                     {% endfor %}
                 </ul>
-            </div>
-            <hr>
+            </td>
+            <td class="orderStatus">{{ order.Order_Status }}</td>
+        </tr>
         {% endfor %}
-            </ul>
         {% else %}
             <p>No orders available.</p>
         {% endif %}
-        </div>
+        </table>
+    </div>
         <div id="notification" style="display:none">
 
         </div>
     </main>
-
-    <script src="js/admin-orderlist.js" async defer></script>
+    <script>
+        var newSrc ="{% static 'image/Bell Select.png'%}";
+    </script>
+    <script src="{% static 'js/admin-orderlist.js' %}" async defer></script>
 </body>
 </html>

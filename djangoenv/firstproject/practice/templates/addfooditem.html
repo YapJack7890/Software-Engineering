@@ -1,15 +1,23 @@
 {% block content %}
+{% load static %}
 
+<title>Add Food Item</title>
+<link rel="stylesheet" href="{% static 'css/addfooditem.css' %}">
+<header>
+    <h1>CANTEEN FOOD RESERVATION</h1>
+</header>
 
+<body>
+<main>
 <form method="POST" action="">
     {% csrf_token %}
     {{form.as_p}}
 
     <input type="submit" value="Submit" />
 </form>
+<div style="text-align: center;">
 <a href="{% url 'admin-menu' %}">Back</a>
-
-<body>
+</div>
     {% if messages %}
     <ul class="messages">
     {% for message in messages %}
@@ -17,7 +25,7 @@
     {% endfor %}
     {% endif %}
     </ul>
-
+</main>
 </body>
 
 

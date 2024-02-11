@@ -120,22 +120,72 @@ nav {
     margin-left: 10px;
 }
 
-#request-top{
-    background: rgba(163, 232, 237, 0.50);
-    display: flex;
-    justify-content: space-between;
-    margin-top: 70px;
-    margin-left: 92px;
-    width: 95%;
-    color: #000;
-
-    text-align: center;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: #000;
-    font-family: Inter;
-    font-size: 20px;
+.canteen{
+    text-decoration: none;
+    margin-top: 25px;
+    margin-left: 5px;
+    color: #FFF;
+    font-family: Quicksand;
+    font-size: 15px;
     font-style: normal;
-    font-weight: bolder;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.canteen img{
+    float: center;
+    margin-left: 15px;
+    width: 50px; 
+    height: 50px;
+    color: #FFF;
+}
+
+main{
+    margin-top: 70px;
+}
+#request-top{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    top: 0%;
+    left: 90px;
+    width: 95.1%;
+    height: 5vh;
+    border: 1px solid #000;
+    justify-content: top;
+    font-size: 18px;
+    z-index: 1;
+    justify-content: space-between; 
+    background-color: rgba(175, 229, 233, 0.30);
+}
+
+td{
+    padding-top: 20px;
+    border-bottom: 1px solid #000;
+}
+
+.th1{
+    width: 50vw;
+    text-align: left;
+}
+
+.th2{
+    width: 50vw;
+    text-align: right;
+}
+
+.requestForm{
+    justify-self: unset;
+    align-items: right;
+    text-align: right;
+}
+
+.requestTitle{
+    justify-self: unset;
+    align-items: left;
+    text-align: left;
 }
 
 #notification{
@@ -145,4 +195,5 @@ nav {
     background: #D9D9D9;
     width: 20%;
     height: 50vh;
+    z-index: 2;
 }

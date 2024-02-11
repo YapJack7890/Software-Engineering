@@ -10,10 +10,7 @@ from django.views import View
 from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
 from django.http import HttpResponse
-import qrcode
-from io import BytesIO
-from PIL import Image
-from pyzbar.pyzbar import decode
+
 
 #Jakie: Jak12345@
 # Create your views here.
@@ -83,7 +80,7 @@ def home(request):
             student_form = studentform.save(commit=False)
             student_form.Parent = request.user
             student_form.save()
-            #return redirect('home')
+            return redirect('user-profile')
         else:
              messages.error(request, 'An error has occurred')
 
@@ -115,23 +112,6 @@ def home(request):
         cart = student.cart
         carts.append(cart)
     return render(request, 'user-profile.html', {'order_items_by_order': order_items_by_order, 'students': students, 'carts': carts, 'form':studentform})
-'''
-@login_required(login_url='register')
-def studentPage(request):
-    
-    studentform = StudentForm()
-    
-    if request.method == 'POST':
-        studentform = StudentForm(request.POST)
-        if studentform.is_valid():
-            student_form = studentform.save(commit=False)
-            student_form.Parent = request.user
-            student_form.save()
-            #return redirect('home')
-        else:
-             messages.error(request, 'An error has occurred')
-
-    return render(request, 'home.html', {'form':studentform})'''
 
 @login_required(login_url='register')
 def editStudent(request, pk):
@@ -346,9 +326,7 @@ def place_order(request, cart_id):
     # delete cart items after saved as order
     cart_items.delete()
 
-    #get the student id from cart
-    student_id = cart.student.id
-    return JsonResponse({'success': True, 'message': 'Order placed successfully', 'student_id': student_id})
+    return JsonResponse({'success': True, 'message': 'Order placed successfully'})
 
 #Below functions are for CanteenWorker page
 @user_passes_test(is_canteen_worker, login_url='login')
@@ -587,24 +565,3 @@ def get_order(request, order_id):
     # For example, you might return the order details as an HTTP response
     response = f"Order ID: {order.id}\nTotal Price: {order.Order_Status}"
     return HttpResponse(response)
-
-def scan_qrcode(image_path):
-    # Open the image file
-    img = Image.open(image_path)
-    
-    # Decode the QR code
-    decoded_data = decode(img)
-    
-    if decoded_data:
-        # Get the data from the first QR code found
-        qr_code_data = decoded_data[0].data.decode('utf-8')
-        
-        # Try to covert the data to an integer
-        try:
-            return int(qr_code_data)
-        except ValueError:
-            print("The decoded data is not an integer")
-            return None
-    
-    #If no QR code is found, return None
-    return None

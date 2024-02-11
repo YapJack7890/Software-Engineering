@@ -46,7 +46,7 @@
                 var url = "{% url 'place_order' cart_id=cart.id %}"
     
                 // Redirect to the menu
-                window.location.href = "{% url 'user-menu' student_id=cart.student.id %}";
+                window.location.href = "{% url 'user-profile' %}";
             }
                 // Render the PayPal button into #paypal-button-container
                 paypal.Buttons({

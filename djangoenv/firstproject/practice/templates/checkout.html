@@ -45,8 +45,8 @@
             function placeOrder(){
                 var url = "{% url 'place_order' cart_id=cart.id %}"
     
-                // Redirect to the menu
-                window.location.href = "{% url 'user-profile' %}";
+                // Redirect to the user-profile
+                //window.location.href = "{% url 'user-profile' %}";
             }
                 // Render the PayPal button into #paypal-button-container
                 paypal.Buttons({
@@ -81,7 +81,7 @@
                             // Check if the order was successfully created
                             if (data.success) {
                                 // Redirect to the "menu" page
-                                window.location.href = '/menu/' + data.student_id;
+                                window.location.href = '/user-profile';
                             } else {
                                 console.error('Error placing order:', data.message);
                             }

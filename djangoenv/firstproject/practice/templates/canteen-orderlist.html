@@ -23,18 +23,15 @@
     <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
 </nav>
 <main>
-    <div id="order-top">
-        <p>Order ID</p>
-        <p>Food Items</p>
-        <p>Status</p>
-    </div>
-    <div>
-        {% for order_data in orders_data %}
-            <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-                <p><strong>Order ID:</strong> {{ order_data.order_id }}</p>
-                <p><strong>Total Price:</strong> {{ order_data.total_price }}</p>
+    <table id="order-top">
+        <th class="th1">Order ID</th>
+        <th class="th2">Food Items</th>
+        <th class="th3">Status</th>
     
-                <h2>Order Items</h2>
+        {% for order_data in orders_data %}
+            <tr>
+                <td class="orderID"><strong>{{ order_data.order_id }}</strong></td>
+                <td class="orderList">
                 <ul>
                     {% for item in order_data.order_items %}
                         <li>
@@ -44,12 +41,16 @@
                         </li>
                     {% endfor %}
                 </ul>
-            </div>
-            <hr>
+            </td>
+            <td class="orderStatus"><strong>{{ order_data.Order_Status }}</strong></td>
+            </tr>
         {% endfor %}
-    </div>
+        </table>
     <div id="notification" style="display:none"></div>
 </main>
+<script>
+    var newSrc ="{% static 'image/Bell Select.png'%}";
+</script>
 
 <script src="{% static 'js/canteen-orderlist.js' %}" async defer></script>
 </body>

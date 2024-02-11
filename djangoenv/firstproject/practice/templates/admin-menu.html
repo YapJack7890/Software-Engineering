@@ -31,7 +31,7 @@
                     {% csrf_token %}
                     <img src="{{ fooditem.image.url }}" id="imageclick">
                     <div id="blueP">
-                        <p>{{fooditem.Food_Name}}</p>
+                        <td><a href="{% url 'adminfooditem' fooditem.id %}">{{ fooditem.Food_Name }}</a><td>
                     </div>
                     <div id="bluebox">
                         <label class="switch">

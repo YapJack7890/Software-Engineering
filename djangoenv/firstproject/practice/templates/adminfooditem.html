@@ -1,0 +1,12 @@
+{% block content %}
+    <div class="food-item-details">
+        <h1>{{ fooditem.id }} - {{ fooditem.Food_Name }}</h1>
+        <div>
+            <h2>RM{{ fooditem.Food_Price }}</h2>
+            <p>Ingredients: {{ fooditem.Ingredient_List }}</p>
+            <p>Description: {{ fooditem.Food_Description }}</p>
+            <a href="{% url 'updatefooditem' fooditem.id %}">Edit</a>
+                <a href="{% url 'deletefooditem' fooditem.id %}">Delete</a>
+        </div>
+    </div>
+{% endblock %}

@@ -83,7 +83,7 @@ def home(request):
             student_form = studentform.save(commit=False)
             student_form.Parent = request.user
             student_form.save()
-            #return redirect('home')
+            return redirect('user-profile')
         else:
              messages.error(request, 'An error has occurred')
 

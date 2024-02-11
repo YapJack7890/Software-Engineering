@@ -22,32 +22,34 @@
         <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
     </nav>
     <main>
-        <div id="request-top">
-            <p>Requests</p>
-            <p>Accept/Deny</p>
-        </div>
-        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-            {% for request in requests %}
-                <li>
-                    <a href="{% url 'request_details' request.id %}">{{ request.Request_Title }}</a><br>
-                        <form method="POST" action="">
-                            {% csrf_token %}
-                            <input type="hidden" name="request_id" value="{{ request.id }}">
-                            <!-- Button for 'accept' action -->
-                            <button type="submit" name="action" value="accept">Accept</button>
-    
-                            <!-- Button for 'deny' action -->
-                            <button type="submit" name="action" value="deny">Deny</button>
-                        </form>
-                    <hr>
-                </li>
+        <div>
+        <table id="request-top">
+            <th class="th1">Requests</th>
+            <th class="th2">Accept/Deny</th>
+            <tr>
+            {% for request in requests %} 
+            <td class="requestTitle"><a href="{% url 'request_details' request.id %}">{{ request.Request_Title }}</a><td>
+                <td class="requestForm">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="request_id" value="{{ request.id }}">
+                    <!-- Button for 'accept' action -->
+                    <button type="submit" name="action" value="accept">Accept</button>
+
+                    <!-- Button for 'deny' action -->
+                    <button type="submit" name="action" value="deny">Deny</button>
+                </form>
+            </td>
+            </tr>
             {% endfor %}
-        </div>
+        </table>
         <div id="notification" style="display:none">
 
         </div>
     </main>
-    
+    <script>
+        var newSrc ="{% static 'image/Bell Select.png'%}";
+    </script>
     <script src="{% static 'js/admin-request.js' %}" async defer></script>
 </body>
 </html>

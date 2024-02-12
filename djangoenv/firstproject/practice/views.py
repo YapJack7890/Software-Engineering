@@ -604,7 +604,10 @@ def scan_qr_code(qr_code_image):
     # Extract the order_id from the decoded objects
     # This assumes that the order_id is the only data in the QR code
     order_id = int(decoded_objects[0].data.decode("utf-8"))
-
+    # Update the order status to "Received"
+    order = Order.objects.get(order_id=order_id)
+    order.Order_Status = "Received"
+    order.save()
     return order_id
 
 def upload_qr(request):

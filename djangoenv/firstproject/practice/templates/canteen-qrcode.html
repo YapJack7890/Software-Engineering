@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 
 <html>
@@ -7,24 +8,44 @@
         <title>QR-Code Scan</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/canteen-qrcode.css">
+        <link rel="stylesheet" href="{% static 'css/canteen-qrcode.css'%} ">
     </head>
     <body>
         <header>
             <h1>CANTEEN FOOD RESERVATION</h1>
-            <a href="#"><img src="image/bell.png" alt="logo" id="notif"></a>
+            <a href="#"><img src="{% static 'image/bell.png' %}" alt="logo" id="notif"></a>
         </header>
         <nav>
-            <a href="canteen-orderlist.html" class="orderlist"><img src="image/Order.png">ORDERLIST</a>
-            <a href="canteen-request.html" class="request"><img src="image/Change.png">REQUEST</a>
-            <a href="canteen-qrcode.html" class="qrcode"><img src="image/Qr Code Select.png"><br>QR-CODE SCAN</a>
-            <a href="login.html" class="logout" id="logout"><img src="image/Logout.png">LOGOUT</a>
+            <a href="{% url 'canteen-orderlist' %}" class="orderlist"><img src="{% static 'image/Order.png' %}">ORDERLIST</a>
+            <a href="{% url 'canteen-request' %}" class="request"><img src="{% static 'image/Change.png' %}">REQUEST</a>
+            <a href="{% url 'upload_qr'%}" class="qrcode"><img src="{% static 'image/Qr Code Select.png' %}"><br>QR-CODE SCAN</a>
+            <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
         </nav>
         <main>
-            <div id="notification" style="display:none">
-
-            </div>
+            <table id="order-top">
+                <th class="th1">Order ID</th>
+                <th class="th2">Food Items</th>
+            
+                <tr>
+                    <td class="orderID"><strong>{{ order_data.order_id }}</strong></td>
+                    <td class="orderList">
+                    <ul>
+                        {% for item in order_data.order_items %}
+                            <li>
+                                <p><strong>Food Item:</strong> {{ item.food_item_name }}</p>
+                                <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                                <p><strong>Total Price:</strong> {{ item.total_price }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                </tr>
+            </table>
+            <div id="notification" style="display:none"></div>
         </main>
-        <script src="js/canteen-qrcode.js" async defer></script>
+        <script>
+            var newSrc ="{% static 'image/Bell Select.png'%}";
+        </script>
+        <script src="{% static 'js/canteen-qrcode.js'%}" async defer></script>
     </body>
 </html>

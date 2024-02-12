@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View QR Code</title>
+    <link rel="stylesheet" href="{% static 'css/viewQR.css' %}">
+<header>
+    <h1>CANTEEN FOOD RESERVATION</h1>
+</header>
+</head>
+<body>
+    <main>
+    <div style="text-align: center;">
+    <h2>View QR Code</h2>
+    </div>
+    <div id="qrcode">
+        <img src="{{ img_data_url }}" alt="QR Code">
+    </div>
+    <div style="text-align: center;">
+        <a href="{{ img_data_url }}" download="qrcode.png"><button>Download QR Code</button></a><br><br>
+        <a href="{% url 'user-profile' %}"><button>Back</button> </a>
+    </div>
+</main>
+</body>
+</html>

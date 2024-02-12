@@ -54,4 +54,8 @@ urlpatterns = [
      #QR Code
     path('canteen-request', views.RequestPage, name='canteen-request'),
     path('canteen-orderlist', views.view_orders_canteen, name='canteen-orderlist'),
+    
+    path('generate_qrcode/<int:order_id>/', views.generate_qrcode, name='generate_qrcode'),
+    path('upload_qr/', views.upload_qr, name='upload_qr'),
+    path('get_order_details/<int:order_id>/', views.get_order_details, name='get_order_details'),
 ]

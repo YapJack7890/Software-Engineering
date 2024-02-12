@@ -28,7 +28,9 @@
                   <br> {% endcomment %}
                   <input type="submit" value="Register" onclick=" matchPassword() ">
                 </form>
+                <div style="text-align: center;">
                 <a href="{% url 'login' %}">Login </a>
+                </div>
             <script src="{% static 'js/register.js'%}" async defer></script>
         </body>
 </html>

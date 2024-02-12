@@ -1,12 +1,24 @@
 {% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/adminfooditem.css' %}">
+<header>
+    <h1>CANTEEN FOOD RESERVATION</h1>
+</header>
+
+<body>
+<main>
     <div class="food-item-details">
-        <h1>{{ fooditem.id }} - {{ fooditem.Food_Name }}</h1>
+        <h2>{{ fooditem.id }} - {{ fooditem.Food_Name }}</h2>
         <div>
             <h2>RM{{ fooditem.Food_Price }}</h2>
             <p>Ingredients: {{ fooditem.Ingredient_List }}</p>
             <p>Description: {{ fooditem.Food_Description }}</p>
+        </div>
+        <div style="text-align: center; justify-content: space-between;">
             <a href="{% url 'updatefooditem' fooditem.id %}">Edit</a>
-                <a href="{% url 'deletefooditem' fooditem.id %}">Delete</a>
+            <a href="{% url 'deletefooditem' fooditem.id %}">Delete</a>
         </div>
     </div>
+</main>
+</body>
 {% endblock %}

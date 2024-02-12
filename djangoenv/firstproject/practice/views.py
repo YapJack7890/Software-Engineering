@@ -10,6 +10,11 @@ from django.views import View
 from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
 from django.http import HttpResponse
+import qrcode
+from io import BytesIO
+import base64
+from pyzbar.pyzbar import decode
+from PIL import Image
 
 
 #Jakie: Jak12345@
@@ -553,16 +558,59 @@ def generate_qrcode(request, order_id):
     img.save(response, 'PNG')
     response.seek(0)
     
-    # Return the image as an HTTP response
-    return HttpResponse(response, content_type='image/png')
+    # Convert the image to a data URL
+    img_data = base64.b64encode(response.getvalue()).decode('ascii')
+    img_data_url = 'data:image/png;base64,' + img_data
+    
+    # Pass the data URL to the template context
+    context = {'img_data_url': img_data_url}
+    return render(request, 'viewQR.html', context)
 
-def get_order(request, order_id):
-    # Fetch the order by id
-    try:
-        order = Order.objects.get(id=order_id)
-    except Order.DoesNotExist:
-        return HttpResponse('Order not found', status=404)
+def get_order_details(request, order_id):
+    # Get the order based on the provided order_id
+    print(f'order_id: {order_id}')
+    order = Order.objects.get(id=order_id)
+    # Get the order items and their quantities
+    print(f'order: {order}')
+    order_items = OrderItem.objects.filter(order=order)
+    print(f'order_items: {order_items}')
+    order_data = {
+        'order_id': order.id,
+        'total_price': order.order_total_price,
+        'order_items': [],
+    }
 
-    # For example, you might return the order details as an HTTP response
-    response = f"Order ID: {order.id}\nTotal Price: {order.Order_Status}"
-    return HttpResponse(response)
+    for order_item in order_items:
+        item_data = {
+            'food_item_name': order_item.order_item.Food_Name,
+            'quantity': order_item.orderitem_quantity,
+            'total_price': order_item.order_item_total_price,
+        }
+        order_data['order_items'].append(item_data)
+
+    # Pass the order data to the template context
+    context = {'order_data': order_data}
+    print(f'context: {context}') 
+    return render(request, 'canteen-qrcode.html', context)
+
+def scan_qr_code(qr_code_image):
+    # Convert the uploaded file to an image
+    image = Image.open(qr_code_image)
+
+    # Decode the QR code
+    decoded_objects = decode(image)
+
+    # Extract the order_id from the decoded objects
+    # This assumes that the order_id is the only data in the QR code
+    order_id = int(decoded_objects[0].data.decode("utf-8"))
+
+    return order_id
+
+def upload_qr(request):
+    if request.method == 'POST':
+        qr_code_image = request.FILES['qr_code']
+        # scan the QR code and extract the order_id
+        order_id = scan_qr_code(qr_code_image)
+        # redirect to the 'get_order_details' view with the order_id as an argument
+        return redirect('get_order_details', order_id=order_id)
+    return render(request, 'upload_qr.html')

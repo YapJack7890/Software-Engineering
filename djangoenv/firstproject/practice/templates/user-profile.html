@@ -109,7 +109,11 @@
                         </ul>
                     </td>
                     <td class="orderStatus">{{ order.Order_Status }}</td>  
-                    <td class="orderButton"><button>View</button></td>
+                    <td class="orderButton">
+                        <a href="{% url 'generate_qrcode' order.id %}">
+                        <button>View</button>
+                    </a>
+                </td>
                     {% else %}
                         <p>No order items found for this order.</p>
                     {% endif %}

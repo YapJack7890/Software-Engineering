@@ -1,0 +1,31 @@
+
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>QR-Code Scan</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'css/upload_qr.css'%} ">
+    </head>
+    <body>
+        <header>
+            <h1>CANTEEN FOOD RESERVATION</h1>
+            <a href="#"><img src="{% static 'image/bell.png' %}" alt="logo" id="notif"></a>
+        </header>
+        <nav>
+            <a href="{% url 'canteen-orderlist' %}" class="orderlist"><img src="{% static 'image/Order.png' %}">ORDERLIST</a>
+            <a href="{% url 'canteen-request' %}" class="request"><img src="{% static 'image/Change.png' %}">REQUEST</a>
+            <a href="{% url 'upload_qr'%}" class="qrcode"><img src="{% static 'image/Qr Code Select.png' %}"><br>QR-CODE SCAN</a>
+            <a href="{% url 'logout' %}" class="logout" id="logout"><img src="{% static 'image/Logout.png' %}">LOGOUT</a>
+        </nav>
+        <main>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="qr_code">
+                <button type="submit">Upload QR Code</button>
+            </form>
+        </main>
+        </body>
+    </html>

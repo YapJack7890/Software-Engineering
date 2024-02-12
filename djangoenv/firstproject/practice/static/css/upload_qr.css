@@ -125,49 +125,24 @@ main{
     margin-top: 70px;
 }
 
-#order-top{
-    display: flex;
-    flex-direction: row;
-    position: relative;
-    top: 0%;
-    left: 90px;
-    width: 95.1%;
-    height: 5vh;
-    border: 1px solid #000;
-    justify-content: top;
-    font-size: 18px;
-    z-index: 1;
-    justify-content: space-between; 
-    background-color: rgba(175, 229, 233, 0.30);
-}
-
-.th1{
-    width: 30vw;
-    text-align: center;
-}
-
-.th2{
-    width: 70vw;
-    text-align: center;
-}
-
-
-td{
-    border-bottom: 1px solid #000;
-}
-
-.orderID{
-    justify-self: unset;
+form{
+    display : flex;
+    justify-content: center;
     align-items: center;
-    text-align: center;
+    flex-direction: column;
+    gap : 5px;
+
 }
 
-#notification{
-    position: fixed;
-    top: 60px;
-    right: 0;
-    background: #D9D9D9;
-    width: 20%;
-    height: 50vh;
-    z-index: 2;
+form button{
+    background-color: #18CDA3;
+    cursor: pointer;
+    font-family: Quicksand;
+    font-size: 23px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    font-weight: bold;
+    width: 40%;
 }
